@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Assurance · FIFA World Cup 2026 Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  :root {
+    --nsw-dark: #002664;
+    --nsw-supp: #146CFD;
+    --nsw-light: #CBEDFD;
+    --nsw-accent: #D7153A;
+    --nsw-grey1: #22272B;
+    --nsw-grey2: #495054;
+    --nsw-grey3: #CDD3D6;
+    --nsw-grey4: #EBEBEB;
+    --nsw-white: #ffffff;
+    --radius: 6px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    font-family: 'Public Sans', sans-serif;
+    background: #F5F6FA;
+    color: var(--nsw-grey1);
+    min-height: 100vh;
+  }
+
+  /* ── Layout ── */
+  .page-wrap { max-width: 900px; margin: 0 auto; padding: 0 0 40px; }
+
+  /* ── Header ── */
+  .da-header { background: var(--nsw-dark); }
+  .da-header-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 3px solid var(--nsw-accent);
+  }
+  .da-logo-area { display: flex; align-items: center; gap: 14px; }
+  .waratah-svg { width: 42px; height: 42px; flex-shrink: 0; }
+  .da-logo-gov { font-size: 10px; color: rgba(255,255,255,0.6); letter-spacing: 0.08em; text-transform: uppercase; }
+  .da-logo-name { font-size: 18px; font-weight: 700; color: #fff; }
+  .da-logo-sub { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+  .da-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+  .wc-badge { background: var(--nsw-accent); color: #fff; font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 3px; letter-spacing: 0.03em; }
+  .live-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: rgba(255,255,255,0.65); }
+  .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; animation: blink 1.4s infinite; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:.25} }
+
+  .stats-bar { background: var(--nsw-grey1); display: grid; grid-template-columns: repeat(4,1fr); }
+  .stat-item { padding: 11px 16px; text-align: center; border-right: 1px solid rgba(255,255,255,0.07); }
+  .stat-item:last-child { border-right: none; }
+  .stat-n { font-size: 22px; font-weight: 700; color: var(--nsw-supp); }
+  .stat-l { font-size: 9px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 1px; }
+
+  /* ── Tabs ── */
+  .tab-bar { background: var(--nsw-dark); display: flex; padding: 0 20px; overflow-x: auto; gap: 0; position: sticky; top: 0; z-index: 10; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn { background: none; border: none; color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 600; font-family: 'Public Sans', sans-serif; padding: 11px 16px; cursor: pointer; white-space: nowrap; border-bottom: 3px solid transparent; transition: color .15s, border-color .15s; display: flex; align-items: center; gap: 5px; }
+  .tab-btn.active { color: #fff; border-bottom-color: var(--nsw-accent); }
+  .tab-btn:hover:not(.active) { color: rgba(255,255,255,.85); }
+  .tab-btn i { font-size: 14px; }
+
+  /* ── Content ── */
+  .content { padding: 20px 24px 28px; }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── Daily Briefing ── */
+  .briefing-card {
+    background: var(--nsw-dark); border-radius: var(--radius);
+    padding: 20px 22px; margin-bottom: 16px;
+    border-left: 4px solid var(--nsw-accent);
+    position: relative; overflow: hidden;
+  }
+  .briefing-card::after {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 140px; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(20,108,253,0.06));
+    pointer-events: none;
+  }
+  .briefing-label { font-size: 10px; font-weight: 700; color: var(--nsw-accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .briefing-headline { font-size: 18px; font-weight: 700; color: #fff; line-height: 1.35; margin-bottom: 10px; }
+  .briefing-body { font-size: 13px; color: rgba(255,255,255,0.78); line-height: 1.7; }
+  .briefing-source { margin-top: 10px; font-size: 10px; color: rgba(255,255,255,0.3); }
+  .spin { display: inline-block; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .open-claude-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--nsw-supp); color: #fff;
+    font-size: 13px; font-weight: 600; font-family: 'Public Sans', sans-serif;
+    padding: 10px 18px; border-radius: var(--radius);
+    border: none; cursor: pointer; text-decoration: none;
+    transition: background .15s; margin-bottom: 16px;
+  }
+  .open-claude-btn:hover { background: #0f5ad4; }
+  .open-claude-btn i { font-size: 16px; }
+
+  /* ── Section title ── */
+  .section-title {
+    font-size: 10px; font-weight: 700; color: var(--nsw-grey2);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin: 16px 0 8px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--nsw-grey4);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title .tag { background: var(--nsw-dark); color: #fff; font-size: 9px; padding: 2px 7px; border-radius: 2px; }
+
+  /* ── Match cards ── */
+  .match-card {
+    background: var(--nsw-white); border: 1px solid var(--nsw-grey4);
+    border-radius: var(--radius); padding: 12px 16px;
+    margin-bottom: 7px; display: grid;
+    grid-template-columns: 1fr auto; gap: 10px; align-items: center;
+  }
+  .match-inner { display: flex; flex-direction: column; gap: 5px; }
+  .match-row { display: flex; align-items: center; justify-content: space-between; }
+  .team { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 500; }
+  .flag { font-size: 18px; }
+  .score-box { display: flex; align-items: center; gap: 6px; }
+  .score { font-size: 18px; font-weight: 700; color: var(--nsw-dark); min-width: 18px; text-align: center; }
+  .score.dash { color: var(--nsw-grey3); }
+  .vs-sep { font-size: 10px; color: var(--nsw-grey3); }
+  .match-meta { font-size: 10px; color: var(--nsw-grey2); margin-top: 2px; }
+  .grp-tag { display: inline-block; font-size: 9px; font-weight: 700; background: var(--nsw-dark); color: #fff; padding: 1px 6px; border-radius: 2px; margin-right: 4px; }
+  .mbadge { font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 3px; white-space: nowrap; }
+  .mbadge.upcoming { background: var(--nsw-light); color: var(--nsw-dark); }
+  .mbadge.live { background: #dcfce7; color: #15803d; }
+  .mbadge.ft { background: var(--nsw-grey4); color: var(--nsw-grey2); }
+
+  /* ── News items ── */
+  .news-item {
+    background: var(--nsw-white); border: 1px solid var(--nsw-grey4);
+    border-radius: var(--radius); padding: 11px 14px; margin-bottom: 7px;
+  }
+  .news-title { font-size: 13px; font-weight: 600; color: var(--nsw-grey1); margin-bottom: 3px; }
+  .news-detail { font-size: 12px; color: var(--nsw-grey2); line-height: 1.5; }
+
+  /* ── QA buttons ── */
+  .qa-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .qa-btn {
+    font-size: 11px; padding: 5px 12px; border: 1px solid var(--nsw-grey3);
+    border-radius: 3px; background: #fff; color: var(--nsw-dark);
+    cursor: pointer; font-family: 'Public Sans', sans-serif; font-weight: 500;
+    transition: background .12s, border-color .12s; text-decoration: none; display: inline-block;
+  }
+  .qa-btn:hover { background: var(--nsw-light); border-color: var(--nsw-supp); }
+
+  /* ── Groups ── */
+  .groups-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr)); gap: 10px; }
+  .group-card { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--nsw-grey4); }
+  .group-hdr { background: var(--nsw-dark); color: #fff; padding: 7px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; }
+  .group-hdr span { font-size: 10px; font-weight: 400; opacity: 0.6; }
+  table.standings { width: 100%; border-collapse: collapse; font-size: 11px; background: #fff; }
+  table.standings th { padding: 5px 10px; text-align: left; color: var(--nsw-grey2); font-weight: 600; background: var(--nsw-grey4); font-size: 10px; }
+  table.standings th:not(:first-child) { text-align: center; }
+  table.standings td { padding: 6px 10px; border-bottom: 1px solid var(--nsw-grey4); }
+  table.standings td:not(:first-child) { text-align: center; }
+  table.standings tr:last-child td { border-bottom: none; }
+  table.standings tr.q1 td { background: rgba(20,108,253,0.07); }
+  table.standings tr.q2 td { background: rgba(20,108,253,0.03); }
+  .pts { font-weight: 700; color: var(--nsw-dark); }
+  .tcell { display: flex; align-items: center; gap: 5px; }
+
+  /* ── Scorers ── */
+  .scorer-item { background: #fff; border: 1px solid var(--nsw-grey4); border-radius: var(--radius); padding: 11px 14px; display: flex; align-items: center; gap: 12px; margin-bottom: 7px; }
+  .rank-badge { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .r1 { background: #fef3c7; color: #92400e; }
+  .r2 { background: #f1f5f9; color: #334155; }
+  .r3 { background: #fef0e7; color: #9a3412; }
+  .scorer-info { flex: 1; }
+  .scorer-name { font-size: 14px; font-weight: 600; }
+  .scorer-team { font-size: 11px; color: var(--nsw-grey2); margin-top: 2px; }
+  .bar-track { background: var(--nsw-grey4); border-radius: 2px; height: 3px; margin-top: 7px; }
+  .bar-fill { background: var(--nsw-accent); border-radius: 2px; height: 3px; }
+  .goal-num { font-size: 22px; font-weight: 700; color: var(--nsw-accent); line-height: 1; text-align: center; }
+  .goal-lbl { font-size: 9px; color: var(--nsw-grey2); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ── Fixtures ── */
+  .day-group { margin-bottom: 16px; }
+  .day-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--nsw-dark); color: #fff; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 3px; margin-bottom: 8px; }
+  .fix-row { background: #fff; border: 1px solid var(--nsw-grey4); border-radius: var(--radius); padding: 9px 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+  .fix-teams { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 500; }
+  .fix-vs { font-size: 10px; color: var(--nsw-grey3); }
+  .fix-time { font-size: 11px; color: var(--nsw-grey2); min-width: 60px; }
+  .fix-venue { font-size: 10px; color: var(--nsw-grey2); min-width: 95px; text-align: right; }
+
+  /* ── Venues ── */
+  .host-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 14px; }
+  .host-box { background: var(--nsw-dark); color: #fff; border-radius: var(--radius); padding: 14px; text-align: center; }
+  .host-flag { font-size: 28px; margin-bottom: 5px; }
+  .host-nm { font-size: 13px; font-weight: 700; }
+  .host-vn { font-size: 10px; opacity: 0.6; margin-top: 3px; }
+  .venue-card { background: #fff; border: 1px solid var(--nsw-grey4); border-radius: var(--radius); overflow: hidden; }
+  .venue-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; border-bottom: 1px solid var(--nsw-grey4); }
+  .venue-row:last-child { border-bottom: none; }
+  .venue-row.final { background: rgba(0,38,100,0.04); }
+  .v-city { font-size: 13px; font-weight: 600; }
+  .v-stadium { font-size: 11px; color: var(--nsw-grey2); }
+  .v-note { font-size: 11px; color: var(--nsw-supp); font-weight: 600; }
+  .v-note.final-note { color: var(--nsw-accent); font-weight: 700; }
+
+  /* ── Footer ── */
+  .da-footer { text-align: center; font-size: 10px; color: var(--nsw-grey2); padding: 16px 24px 0; border-top: 1px solid var(--nsw-grey4); margin: 0 24px; }
+  .da-footer a { color: var(--nsw-supp); }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .da-header-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .da-header-right { align-items: flex-start; }
+    .stats-bar { grid-template-columns: repeat(2,1fr); }
+    .groups-grid { grid-template-columns: 1fr; }
+    .host-strip { grid-template-columns: 1fr; }
+    .fix-venue { display: none; }
+    .content { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <div class="da-header">
+    <div class="da-header-top">
+      <div class="da-logo-area">
+        <svg class="waratah-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="40" cy="40" r="40" fill="#D7153A"/>
+          <path d="M40 13C40 13 27 23 27 37c0 7.5 5.8 13 13 13s13-5.5 13-13C53 23 40 13 40 13z" fill="#fff" opacity="0.92"/>
+          <path d="M40 37 Q34 46 28 52M40 37 Q46 46 52 52" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+          <circle cx="40" cy="37" r="5.5" fill="#D7153A"/>
+          <path d="M33 53 Q40 66 47 53" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+        <div>
+          <div class="da-logo-gov">NSW Government</div>
+          <div class="da-logo-name">Digital Assurance</div>
+          <div class="da-logo-sub">FIFA World Cup 2026 Live Tracker</div>
+        </div>
+      </div>
+      <div class="da-header-right">
+        <div class="wc-badge">⚽ FIFA World Cup 2026™</div>
+        <div class="live-row"><span class="live-dot"></span> Live · 11 Jun – 19 Jul 2026</div>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item"><div class="stat-n">48</div><div class="stat-l">Teams</div></div>
+      <div class="stat-item"><div class="stat-n">12</div><div class="stat-l">Groups</div></div>
+      <div class="stat-item"><div class="stat-n">104</div><div class="stat-l">Matches</div></div>
+      <div class="stat-item"><div class="stat-n">16</div><div class="stat-l">Venues</div></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('briefing',this)"><i class="ti ti-microphone"></i> Daily briefing</button>
+    <button class="tab-btn" onclick="showTab('scores',this)"><i class="ti ti-ball-football"></i> Scores</button>
+    <button class="tab-btn" onclick="showTab('groups',this)"><i class="ti ti-list-numbers"></i> Standings</button>
+    <button class="tab-btn" onclick="showTab('scorers',this)"><i class="ti ti-trophy"></i> Top scorers</button>
+    <button class="tab-btn" onclick="showTab('fixtures',this)"><i class="ti ti-calendar-event"></i> Fixtures</button>
+    <button class="tab-btn" onclick="showTab('venues',this)"><i class="ti ti-map-pin"></i> Venues</button>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ DAILY BRIEFING ══ -->
+    <div id="tab-briefing" class="tab-pane active">
+      <div class="briefing-card">
+        <div class="briefing-label" id="briefing-date">Loading…</div>
+        <div class="briefing-headline" id="briefing-headline"><span class="spin">⟳</span> Fetching today's World Cup briefing…</div>
+        <div class="briefing-body" id="briefing-body"></div>
+        <div class="briefing-source" id="briefing-source"></div>
+      </div>
+
+      <a id="open-claude-btn" class="open-claude-btn" href="#" target="_blank" rel="noopener">
+        <i class="ti ti-external-link"></i> Get today's full match report in Claude
+      </a>
+
+      <div class="section-title">Also in the news</div>
+      <div id="news-items">
+        <div class="news-item"><div class="news-detail" style="color:var(--nsw-grey3);">Loading…</div></div>
+      </div>
+
+      <div class="qa-strip" style="margin-top:14px;">
+        <a class="qa-btn" id="qa-results" href="#" target="_blank">Yesterday's results ↗</a>
+        <a class="qa-btn" id="qa-upsets" href="#" target="_blank">Biggest upsets ↗</a>
+        <a class="qa-btn" id="qa-player" href="#" target="_blank">Player of the day ↗</a>
+        <a class="qa-btn" id="qa-standings" href="#" target="_blank">Live standings ↗</a>
+      </div>
+    </div>
+
+    <!-- ══ SCORES ══ -->
+    <div id="tab-scores" class="tab-pane">
+      <div class="qa-strip">
+        <a class="qa-btn" id="qa-livescores" href="#" target="_blank">Live scores now ↗</a>
+        <a class="qa-btn" id="qa-yest" href="#" target="_blank">Yesterday's results ↗</a>
+        <a class="qa-btn" id="qa-allresults" href="#" target="_blank">All results ↗</a>
+      </div>
+
+      <div class="section-title">11 Jun — Opening match <span class="tag">Group A</span></div>
+      <div class="match-card">
+        <div class="match-inner">
+          <div class="match-row">
+            <div class="team"><span class="flag">🇲🇽</span>Mexico</div>
+            <div class="score-box"><div class="score dash">—</div><div class="vs-sep">:</div><div class="score dash">—</div></div>
+            <div class="team"><span class="flag">🇿🇦</span>South Africa</div>
+          </div>
+          <div class="match-meta"><span class="grp-tag">A</span>Estadio Azteca, Mexico City · 3:00 PM ET</div>
+        </div>
+        <div class="mbadge upcoming">Upcoming</div>
+      </div>
+
+      <div class="section-title">12 Jun <span class="tag">Groups A · B · D</span></div>
+      <div class="match-card">
+        <div class="match-inner">
+          <div class="match-row">
+            <div class="team"><span class="flag">🇰🇷</span>South Korea</div>
+            <div class="score-box"><div class="score dash">—</div><div class="vs-sep">:</div><div class="score dash">—</div></div>
+            <div class="team"><span class="flag">🇨🇿</span>Czechia</div>
+          </div>
+          <div class="match-meta"><span class="grp-tag">A</span>Estadio Akron, Guadalajara · 10:00 PM ET</div>
+        </div>
+        <div class="mbadge upcoming">Upcoming</div>
+      </div>
+      <div class="match-card">
+        <div class="match-inner">
+          <div class="match-row">
+            <div class="team"><span class="flag">🇨🇦</span>Canada</div>
+            <div class="score-box"><div class="score dash">—</div><div class="vs-sep">:</div><div class="score dash">—</div></div>
+            <div class="team"><span class="flag">🇧🇦</span>Bosnia &amp; Herz.</div>
+          </div>
+          <div class="match-meta"><span class="grp-tag">B</span>BMO Field, Toronto · 3:00 PM ET</div>
+        </div>
+        <div class="mbadge upcoming">Upcoming</div>
+      </div>
+      <div class="match-card">
+        <div class="match-inner">
+          <div class="match-row">
+            <div class="team"><span class="flag">🇺🇸</span>United States</div>
+            <div class="score-box"><div class="score dash">—</div><div class="vs-sep">:</div><div class="score dash">—</div></div>
+            <div class="team"><span class="flag">🇵🇾</span>Paraguay</div>
+          </div>
+          <div class="match-meta"><span class="grp-tag">D</span>SoFi Stadium, Los Angeles · 9:00 PM ET</div>
+        </div>
+        <div class="mbadge upcoming">Upcoming</div>
+      </div>
+
+      <div class="section-title">13 Jun <span class="tag">Groups B · C</span></div>
+      <div class="match-card">
+        <div class="match-inner">
+          <div class="match-row">
+            <div class="team"><span class="flag">🇶🇦</span>Qatar</div>
+            <div class="score-box"><div class="score dash">—</div><div class="vs-sep">:</div><div class="score dash">—</div></div>
+            <div class="team"><span class="flag">🇨🇭</span>Switzerland</div>
+          </div>
+          <div class="match-meta"><span class="grp-tag">B</span>Levi's Stadium, San Francisco · 3:00 PM ET</div>
+        </div>
+        <div class="mbadge upcoming">Upcoming</div>
+      </div>
+      <div class="match-card">
+        <div class="match-inner">
+          <div class="match-row">
+            <div class="team"><span class="flag">🇧🇷</span>Brazil</div>
+            <div class="score-box"><div class="score dash">—</div><div class="vs-sep">:</div><div class="score dash">—</div></div>
+            <div class="team"><span class="flag">🇲🇦</span>Morocco</div>
+          </div>
+          <div class="match-meta"><span class="grp-tag">C</span>MetLife Stadium, New York/NJ · 6:00 PM ET</div>
+        </div>
+        <div class="mbadge upcoming">Upcoming</div>
+      </div>
+      <div class="match-card">
+        <div class="match-inner">
+          <div class="match-row">
+            <div class="team"><span class="flag">🇭🇹</span>Haiti</div>
+            <div class="score-box"><div class="score dash">—</div><div class="vs-sep">:</div><div class="score dash">—</div></div>
+            <div class="team"><span class="flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>Scotland</div>
+          </div>
+          <div class="match-meta"><span class="grp-tag">C</span>Gillette Stadium, Boston · 9:00 PM ET</div>
+        </div>
+        <div class="mbadge upcoming">Upcoming</div>
+      </div>
+      <div style="text-align:center;margin-top:12px;">
+        <a class="qa-btn" style="font-size:12px;padding:8px 20px;" id="qa-allscores" href="#" target="_blank">View all results in Claude ↗</a>
+      </div>
+    </div>
+
+    <!-- ══ STANDINGS ══ -->
+    <div id="tab-groups" class="tab-pane">
+      <div class="qa-strip">
+        <a class="qa-btn" id="qa-livestand" href="#" target="_blank">Live standings now ↗</a>
+        <a class="qa-btn" id="qa-qualified" href="#" target="_blank">Who has qualified? ↗</a>
+      </div>
+      <div class="groups-grid" id="groups-grid"></div>
+    </div>
+
+    <!-- ══ TOP SCORERS ══ -->
+    <div id="tab-scorers" class="tab-pane">
+      <div class="qa-strip">
+        <a class="qa-btn" id="qa-topscorers" href="#" target="_blank">Live top scorers ↗</a>
+        <a class="qa-btn" id="qa-assists" href="#" target="_blank">Top assists ↗</a>
+        <a class="qa-btn" id="qa-totalgoals" href="#" target="_blank">Total goals ↗</a>
+      </div>
+      <div style="text-align:center;padding:32px;color:var(--nsw-grey2);">
+        <i class="ti ti-clock" style="font-size:32px;color:var(--nsw-grey3);display:block;margin-bottom:10px;"></i>
+        Tournament kicks off 11 June 2026<br>
+        <span style="font-size:11px;color:var(--nsw-grey3);">Scorer data will populate from the first match</span>
+      </div>
+      <div style="text-align:center;margin-top:8px;">
+        <a class="qa-btn" style="font-size:12px;padding:8px 20px;" id="qa-goldenboot" href="#" target="_blank">Golden Boot favourites ↗</a>
+      </div>
+    </div>
+
+    <!-- ══ FIXTURES ══ -->
+    <div id="tab-fixtures" class="tab-pane">
+      <div class="day-group">
+        <div class="day-pill"><i class="ti ti-flag" style="font-size:12px;"></i> Thu 11 Jun — Opening day</div>
+        <div class="fix-row"><div class="grp-tag">A</div><div class="fix-teams"><span>🇲🇽 Mexico</span><span class="fix-vs">vs</span><span>🇿🇦 South Africa</span></div><div class="fix-time">3:00 PM ET</div><div class="fix-venue">Azteca, MX City</div></div>
+        <div class="fix-row"><div class="grp-tag">A</div><div class="fix-teams"><span>🇰🇷 S. Korea</span><span class="fix-vs">vs</span><span>🇨🇿 Czechia</span></div><div class="fix-time">10:00 PM ET</div><div class="fix-venue">Akron, Guadalajara</div></div>
+      </div>
+      <div class="day-group">
+        <div class="day-pill">Fri 12 Jun</div>
+        <div class="fix-row"><div class="grp-tag">B</div><div class="fix-teams"><span>🇨🇦 Canada</span><span class="fix-vs">vs</span><span>🇧🇦 Bosnia</span></div><div class="fix-time">3:00 PM ET</div><div class="fix-venue">BMO, Toronto</div></div>
+        <div class="fix-row"><div class="grp-tag">E</div><div class="fix-teams"><span>🇩🇪 Germany</span><span class="fix-vs">vs</span><span>🇨🇼 Curaçao</span></div><div class="fix-time">6:00 PM ET</div><div class="fix-venue">NRG, Houston</div></div>
+        <div class="fix-row"><div class="grp-tag">D</div><div class="fix-teams"><span>🇺🇸 USA</span><span class="fix-vs">vs</span><span>🇵🇾 Paraguay</span></div><div class="fix-time">9:00 PM ET</div><div class="fix-venue">SoFi, LA</div></div>
+      </div>
+      <div class="day-group">
+        <div class="day-pill">Sat 13 Jun</div>
+        <div class="fix-row"><div class="grp-tag">B</div><div class="fix-teams"><span>🇶🇦 Qatar</span><span class="fix-vs">vs</span><span>🇨🇭 Switzerland</span></div><div class="fix-time">3:00 PM ET</div><div class="fix-venue">Levi's, SF Bay</div></div>
+        <div class="fix-row"><div class="grp-tag">C</div><div class="fix-teams"><span>🇧🇷 Brazil</span><span class="fix-vs">vs</span><span>🇲🇦 Morocco</span></div><div class="fix-time">6:00 PM ET</div><div class="fix-venue">MetLife, NJ</div></div>
+        <div class="fix-row"><div class="grp-tag">C</div><div class="fix-teams"><span>🇭🇹 Haiti</span><span class="fix-vs">vs</span><span>🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland</span></div><div class="fix-time">9:00 PM ET</div><div class="fix-venue">Gillette, Boston</div></div>
+      </div>
+      <div class="day-group">
+        <div class="day-pill">Sun 14 Jun</div>
+        <div class="fix-row"><div class="grp-tag">F</div><div class="fix-teams"><span>🇳🇱 Netherlands</span><span class="fix-vs">vs</span><span>🇯🇵 Japan</span></div><div class="fix-time">3:00 PM ET</div><div class="fix-venue">Arrowhead, KC</div></div>
+        <div class="fix-row"><div class="grp-tag">G</div><div class="fix-teams"><span>🇧🇪 Belgium</span><span class="fix-vs">vs</span><span>🇪🇬 Egypt</span></div><div class="fix-time">6:00 PM ET</div><div class="fix-venue">AT&amp;T, Dallas</div></div>
+        <div class="fix-row"><div class="grp-tag">H</div><div class="fix-teams"><span>🇪🇸 Spain</span><span class="fix-vs">vs</span><span>🇨🇻 Cape Verde</span></div><div class="fix-time">3:00 PM ET</div><div class="fix-venue">M-B Stadium, ATL</div></div>
+        <div class="fix-row"><div class="grp-tag">I</div><div class="fix-teams"><span>🇫🇷 France</span><span class="fix-vs">vs</span><span>🇸🇳 Senegal</span></div><div class="fix-time">6:00 PM ET</div><div class="fix-venue">Hard Rock, Miami</div></div>
+      </div>
+      <div style="text-align:center;">
+        <a class="qa-btn" style="font-size:12px;padding:8px 20px;" id="qa-fullsched" href="#" target="_blank">Full schedule in Claude ↗</a>
+      </div>
+    </div>
+
+    <!-- ══ VENUES ══ -->
+    <div id="tab-venues" class="tab-pane">
+      <div class="host-strip">
+        <div class="host-box"><div class="host-flag">🇺🇸</div><div class="host-nm">United States</div><div class="host-vn">11 cities · 78 matches</div></div>
+        <div class="host-box"><div class="host-flag">🇨🇦</div><div class="host-nm">Canada</div><div class="host-vn">2 cities · 13 matches</div></div>
+        <div class="host-box"><div class="host-flag">🇲🇽</div><div class="host-nm">Mexico</div><div class="host-vn">3 cities · 13 matches</div></div>
+      </div>
+      <div class="venue-card">
+        <div class="venue-row"><div><div class="v-city">🇲🇽 Mexico City</div><div class="v-stadium">Estadio Azteca</div></div><div class="v-note">Opens 11 Jun</div></div>
+        <div class="venue-row"><div><div class="v-city">🇲🇽 Guadalajara</div><div class="v-stadium">Estadio Akron</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row"><div><div class="v-city">🇲🇽 Monterrey</div><div class="v-stadium">Estadio BBVA</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row"><div><div class="v-city">🇨🇦 Toronto</div><div class="v-stadium">BMO Field</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row"><div><div class="v-city">🇨🇦 Vancouver</div><div class="v-stadium">BC Place</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row final"><div><div class="v-city">🇺🇸 New York / NJ</div><div class="v-stadium">MetLife Stadium</div></div><div class="v-note final-note">⭐ Final · 19 Jul</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Los Angeles</div><div class="v-stadium">SoFi Stadium</div></div><div class="v-note">Group &amp; KO</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Dallas</div><div class="v-stadium">AT&amp;T Stadium</div></div><div class="v-note">Group &amp; KO</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 San Francisco Bay Area</div><div class="v-stadium">Levi's Stadium</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Boston</div><div class="v-stadium">Gillette Stadium</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Atlanta</div><div class="v-stadium">Mercedes-Benz Stadium</div></div><div class="v-note">Group &amp; KO</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Miami</div><div class="v-stadium">Hard Rock Stadium</div></div><div class="v-note">Group &amp; KO</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Seattle</div><div class="v-stadium">Lumen Field</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Houston</div><div class="v-stadium">NRG Stadium</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Kansas City</div><div class="v-stadium">Arrowhead Stadium</div></div><div class="v-note">Group stage</div></div>
+        <div class="venue-row"><div><div class="v-city">🇺🇸 Philadelphia</div><div class="v-stadium">Lincoln Financial Field</div></div><div class="v-note">Group stage</div></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <div class="da-footer">
+    <a href="https://www.digital.nsw.gov.au/policy/digital-assurance" target="_blank" rel="noopener">Digital Assurance</a> &nbsp;·&nbsp; NSW Government &nbsp;·&nbsp; FIFA World Cup 2026™ &nbsp;·&nbsp; 11 Jun – 19 Jul 2026
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+const GROUPS = [
+  {n:'A',t:[{f:'🇲🇽',n:'Mexico'},{f:'🇰🇷',n:'South Korea'},{f:'🇿🇦',n:'South Africa'},{f:'🇨🇿',n:'Czechia'}]},
+  {n:'B',t:[{f:'🇨🇦',n:'Canada'},{f:'🇧🇦',n:'Bosnia & Herz.'},{f:'🇶🇦',n:'Qatar'},{f:'🇨🇭',n:'Switzerland'}]},
+  {n:'C',t:[{f:'🇧🇷',n:'Brazil'},{f:'🇲🇦',n:'Morocco'},{f:'🇭🇹',n:'Haiti'},{f:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',n:'Scotland'}]},
+  {n:'D',t:[{f:'🇺🇸',n:'United States'},{f:'🇵🇾',n:'Paraguay'},{f:'🇦🇺',n:'Australia'},{f:'🇹🇷',n:'Turkey'}]},
+  {n:'E',t:[{f:'🇩🇪',n:'Germany'},{f:'🇨🇼',n:'Curaçao'},{f:'🇨🇮',n:'Ivory Coast'},{f:'🇪🇨',n:'Ecuador'}]},
+  {n:'F',t:[{f:'🇳🇱',n:'Netherlands'},{f:'🇯🇵',n:'Japan'},{f:'🇸🇪',n:'Sweden'},{f:'🇹🇳',n:'Tunisia'}]},
+  {n:'G',t:[{f:'🇧🇪',n:'Belgium'},{f:'🇪🇬',n:'Egypt'},{f:'🇮🇷',n:'Iran'},{f:'🇳🇿',n:'New Zealand'}]},
+  {n:'H',t:[{f:'🇪🇸',n:'Spain'},{f:'🇨🇻',n:'Cape Verde'},{f:'🇸🇦',n:'Saudi Arabia'},{f:'🇺🇾',n:'Uruguay'}]},
+  {n:'I',t:[{f:'🇫🇷',n:'France'},{f:'🇸🇳',n:'Senegal'},{f:'🇮🇶',n:'Iraq'},{f:'🇳🇴',n:'Norway'}]},
+  {n:'J',t:[{f:'🇦🇷',n:'Argentina'},{f:'🇩🇿',n:'Algeria'},{f:'🇦🇹',n:'Austria'},{f:'🇯🇴',n:'Jordan'}]},
+  {n:'K',t:[{f:'🇵🇹',n:'Portugal'},{f:'🇨🇩',n:'DR Congo'},{f:'🇺🇿',n:'Uzbekistan'},{f:'🇨🇴',n:'Colombia'}]},
+  {n:'L',t:[{f:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',n:'England'},{f:'🇭🇷',n:'Croatia'},{f:'🇬🇭',n:'Ghana'},{f:'🇵🇦',n:'Panama'}]},
+];
+
+function claudeUrl(prompt) {
+  return 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
+}
+
+function setClaudeLinks() {
+  const today = new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
+  const pairs = [
+    ['open-claude-btn',    `Give me a detailed 2026 FIFA World Cup match report for ${today} including all scorelines, goalscorers and key moments from yesterday's matches`],
+    ['qa-results',        `Show me all 2026 FIFA World Cup match results from ${today}`],
+    ['qa-upsets',         'What are the biggest upsets so far in the 2026 FIFA World Cup?'],
+    ['qa-player',         `Who had the standout individual performance at the 2026 FIFA World Cup yesterday ${today}?`],
+    ['qa-standings',      'Show me the current 2026 FIFA World Cup group standings for all 12 groups A through L'],
+    ['qa-livescores',     'What are the live 2026 FIFA World Cup scores right now?'],
+    ['qa-yest',           `All 2026 FIFA World Cup results from ${today} with scorers`],
+    ['qa-allresults',     'All 2026 FIFA World Cup group stage results so far with scores'],
+    ['qa-allscores',      'Give me a complete summary of 2026 FIFA World Cup results and live scores'],
+    ['qa-livestand',      'Current 2026 FIFA World Cup group standings all 12 groups with points tables'],
+    ['qa-qualified',      'Which teams have already qualified from the 2026 FIFA World Cup group stage?'],
+    ['qa-topscorers',     'Who are the top scorers at the 2026 FIFA World Cup right now with goal tallies?'],
+    ['qa-assists',        'Who has the most assists at the 2026 FIFA World Cup so far?'],
+    ['qa-totalgoals',     'How many goals have been scored in total at the 2026 FIFA World Cup so far?'],
+    ['qa-goldenboot',     'Who are the favourites to win the 2026 FIFA World Cup Golden Boot based on current form?'],
+    ['qa-fullsched',      'Show me the complete 2026 FIFA World Cup group stage fixture schedule for all 12 groups'],
+  ];
+  pairs.forEach(([id, prompt]) => {
+    const el = document.getElementById(id);
+    if (el) el.href = claudeUrl(prompt);
+  });
+}
+
+function buildGroups() {
+  const grid = document.getElementById('groups-grid');
+  GROUPS.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    card.innerHTML = `
+      <div class="group-hdr">Group ${g.n} <span>Awaiting kickoff</span></div>
+      <table class="standings">
+        <thead><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th></tr></thead>
+        <tbody>${g.t.map((t,i) => `<tr class="${i===0?'q1':i===1?'q2':''}">
+          <td><div class="tcell">${t.f} ${t.n}</div></td>
+          <td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="pts">0</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+    grid.appendChild(card);
+  });
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function buildBriefing() {
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('briefing-date').textContent = dateStr + ' · Daily Briefing';
+
+  const tournamentStart = new Date('2026-06-11');
+  const isLive = today >= tournamentStart;
+
+  if (isLive) {
+    const prompt = `Give me an outstanding, vivid, factually accurate daily briefing about yesterday's 2026 FIFA World Cup matches. Include the most remarkable result, key goalscorers, any upsets, and what it means for group standings. Then list 3 short notable news items from the tournament.`;
+    document.getElementById('briefing-headline').textContent = 'Get today\'s AI-powered match briefing';
+    document.getElementById('briefing-body').textContent = 'Click the button below to open Claude and get a live, search-powered commentary on all of yesterday\'s matches — scorelines, goalscorers, upsets and talking points, freshly generated every day.';
+    document.getElementById('briefing-source').textContent = 'Powered by Claude with live web search';
+    document.getElementById('open-claude-btn').href = claudeUrl(prompt);
+    document.getElementById('news-items').innerHTML = [
+      ['⚽ Tournament is live','Click any button above to pull live match data, standings and scorer stats from Claude.'],
+      ['📊 Group standings','All 12 group tables update in real time — use the Standings tab or ask Claude directly.'],
+      ['🏆 Top scorers','The Golden Boot race will be tracked throughout the tournament.']
+    ].map(([t,d]) => `<div class="news-item"><div class="news-title">${t}</div><div class="news-detail">${d}</div></div>`).join('');
+  } else {
+    const daysTo = Math.ceil((tournamentStart - today) / 86400000);
+    document.getElementById('briefing-headline').textContent = `${daysTo} days until the greatest show on earth`;
+    document.getElementById('briefing-body').textContent = 'The most expanded FIFA World Cup in history kicks off on 11 June 2026 at the iconic Estadio Azteca in Mexico City. For the first time ever, three nations co-host — the USA, Canada and Mexico — across 16 venues. 48 teams, 104 matches, one champion.';
+    document.getElementById('briefing-source').textContent = 'Pre-tournament · Briefings go live on 12 June 2026';
+    document.getElementById('open-claude-btn').href = claudeUrl('Give me the latest 2026 FIFA World Cup pre-tournament news and which teams are favourites to win');
+    document.getElementById('news-items').innerHTML = [
+      ['🌎 Three nations, one tournament','The USA hosts 78 of the 104 matches across 11 cities, with Canada and Mexico hosting 13 each.'],
+      ['⭐ Opening match: Mexico vs South Africa','The Azteca opens the tournament on 11 June 2026 — a venue that hosted the 1970 and 1986 World Cup finals.'],
+      ['🏆 Final: MetLife Stadium, New Jersey','The world's biggest sporting event concludes on 19 July 2026 in East Rutherford, NJ.']
+    ].map(([t,d]) => `<div class="news-item"><div class="news-title">${t}</div><div class="news-detail">${d}</div></div>`).join('');
+  }
+}
+
+buildGroups();
+setClaudeLinks();
+buildBriefing();
+</script>
+</body>
+</html>

@@ -90,15 +90,15 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .open-claude-btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: var(--nsw-supp); color: #fff;
-    font-size: 13px; font-weight: 600; font-family: 'Public Sans', sans-serif;
-    padding: 10px 18px; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    background: var(--nsw-accent); color: #fff;
+    font-size: 15px; font-weight: 700; font-family: 'Public Sans', sans-serif;
+    padding: 14px 24px; border-radius: var(--radius); width: 100%;
     border: none; cursor: pointer; text-decoration: none;
     transition: background .15s; margin-bottom: 16px;
   }
-  .open-claude-btn:hover { background: #0f5ad4; }
-  .open-claude-btn i { font-size: 16px; }
+  .open-claude-btn:hover { background: #b8102f; }
+  .open-claude-btn i { font-size: 20px; }
 
   /* ── Section title ── */
   .section-title {
@@ -136,9 +136,15 @@
   .news-item {
     background: var(--nsw-white); border: 1px solid var(--nsw-grey4);
     border-radius: var(--radius); padding: 11px 14px; margin-bottom: 7px;
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none; transition: border-color .15s, background .15s;
   }
-  .news-title { font-size: 13px; font-weight: 600; color: var(--nsw-grey1); margin-bottom: 3px; }
-  .news-detail { font-size: 12px; color: var(--nsw-grey2); line-height: 1.5; }
+  .news-item:hover { border-color: var(--nsw-supp); background: #f0f6ff; }
+  .news-icon { font-size: 22px; flex-shrink: 0; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--nsw-grey4); border-radius: 6px; }
+  .news-text { flex: 1; }
+  .news-title { font-size: 13px; font-weight: 600; color: var(--nsw-grey1); margin-bottom: 2px; }
+  .news-detail { font-size: 11px; color: var(--nsw-grey2); line-height: 1.5; }
+  .news-arrow { font-size: 14px; color: var(--nsw-grey3); flex-shrink: 0; }
 
   /* ── QA buttons ── */
   .qa-strip { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
@@ -275,12 +281,41 @@
       </div>
 
       <a id="open-claude-btn" class="open-claude-btn" href="#" target="_blank" rel="noopener">
-        <i class="ti ti-external-link"></i> Get today's full match report in Claude
+        <i class="ti ti-external-link"></i> ⚽ Open in Football
       </a>
 
-      <div class="section-title">Also in the news</div>
+      <div class="section-title">Live football news</div>
       <div id="news-items">
-        <div class="news-item"><div class="news-detail" style="color:var(--nsw-grey3);">Loading…</div></div>
+        <a class="news-item" href="https://www.bbc.com/sport/football/world-cup" target="_blank" rel="noopener">
+          <div class="news-icon">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+          <div class="news-text"><div class="news-title">BBC Sport — World Cup 2026</div><div class="news-detail">Live scores, results, match reports and analysis</div></div>
+          <div class="news-arrow">↗</div>
+        </a>
+        <a class="news-item" href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener">
+          <div class="news-icon">🏆</div>
+          <div class="news-text"><div class="news-title">FIFA Official — Match Centre</div><div class="news-detail">Official scores, standings, stats and news from FIFA</div></div>
+          <div class="news-arrow">↗</div>
+        </a>
+        <a class="news-item" href="https://www.theguardian.com/football/world-cup-2026" target="_blank" rel="noopener">
+          <div class="news-icon">📰</div>
+          <div class="news-text"><div class="news-title">The Guardian — World Cup 2026</div><div class="news-detail">In-depth reporting, match previews and expert columns</div></div>
+          <div class="news-arrow">↗</div>
+        </a>
+        <a class="news-item" href="https://www.espn.com/soccer/league/_/name/FIFA.WORLD" target="_blank" rel="noopener">
+          <div class="news-icon">📺</div>
+          <div class="news-text"><div class="news-title">ESPN — World Cup Hub</div><div class="news-detail">Live scores, video highlights and expert commentary</div></div>
+          <div class="news-arrow">↗</div>
+        </a>
+        <a class="news-item" href="https://news.google.com/search?q=FIFA+World+Cup+2026" target="_blank" rel="noopener">
+          <div class="news-icon">🔍</div>
+          <div class="news-text"><div class="news-title">Google News — World Cup 2026</div><div class="news-detail">Latest headlines from all major sports outlets</div></div>
+          <div class="news-arrow">↗</div>
+        </a>
+        <a class="news-item" href="https://www.sofascore.com/football/tournament/world/world-championship/16" target="_blank" rel="noopener">
+          <div class="news-icon">📊</div>
+          <div class="news-text"><div class="news-title">SofaScore — Live Scores & Stats</div><div class="news-detail">Real-time scores, lineups, player ratings and heatmaps</div></div>
+          <div class="news-arrow">↗</div>
+        </a>
       </div>
 
       <div class="qa-strip" style="margin-top:14px;">
@@ -559,15 +594,11 @@ function buildBriefing() {
 
   if (isLive) {
     const prompt = `Give me an outstanding, vivid, factually accurate daily briefing about yesterday's 2026 FIFA World Cup matches. Include the most remarkable result, key goalscorers, any upsets, and what it means for group standings. Then list 3 short notable news items from the tournament.`;
-    document.getElementById('briefing-headline').textContent = 'Get today\'s AI-powered match briefing';
+    document.getElementById('briefing-headline').textContent = '⚽ Open today's briefing in Football';
     document.getElementById('briefing-body').textContent = 'Click the button below to open Claude and get a live, search-powered commentary on all of yesterday\'s matches — scorelines, goalscorers, upsets and talking points, freshly generated every day.';
     document.getElementById('briefing-source').textContent = 'Powered by Claude with live web search';
     document.getElementById('open-claude-btn').href = claudeUrl(prompt);
-    document.getElementById('news-items').innerHTML = [
-      ['⚽ Tournament is live','Click any button above to pull live match data, standings and scorer stats from Claude.'],
-      ['📊 Group standings','All 12 group tables update in real time — use the Standings tab or ask Claude directly.'],
-      ['🏆 Top scorers','The Golden Boot race will be tracked throughout the tournament.']
-    ].map(([t,d]) => `<div class="news-item"><div class="news-title">${t}</div><div class="news-detail">${d}</div></div>`).join('');
+    // news links are static HTML — no JS override needed
   } else {
     const daysTo = Math.ceil((tournamentStart - today) / 86400000);
     document.getElementById('briefing-headline').textContent = `${daysTo} days until the greatest show on earth`;

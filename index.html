@@ -89,16 +89,7 @@
   .spin { display: inline-block; animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .open-claude-btn {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    background: var(--nsw-accent); color: #fff;
-    font-size: 15px; font-weight: 700; font-family: 'Public Sans', sans-serif;
-    padding: 14px 24px; border-radius: var(--radius); width: 100%;
-    border: none; cursor: pointer; text-decoration: none;
-    transition: background .15s; margin-bottom: 16px;
-  }
-  .open-claude-btn:hover { background: #b8102f; }
-  .open-claude-btn i { font-size: 20px; }
+
 
   /* ── Section title ── */
   .section-title {
@@ -210,6 +201,173 @@
   .v-note { font-size: 11px; color: var(--nsw-supp); font-weight: 600; }
   .v-note.final-note { color: var(--nsw-accent); font-weight: 700; }
 
+
+
+  .briefing-loading { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.5); font-size: 13px; font-style: italic; }
+  .briefing-news { margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 12px; display: flex; flex-direction: column; gap: 7px; }
+  .briefing-news-item { display: flex; gap: 10px; align-items: flex-start; }
+  .briefing-news-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--nsw-supp); flex-shrink: 0; margin-top: 5px; }
+  .briefing-news-text { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.55; }
+  .briefing-news-text strong { color: rgba(255,255,255,0.95); font-weight: 600; }
+  .briefing-error { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 8px; font-style: italic; }
+  .briefing-retry { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 5px 12px; font-size: 11px; font-family: 'Public Sans', sans-serif; cursor: pointer; margin-top: 8px; }
+  .briefing-retry:hover { background: rgba(255,255,255,0.18); }
+  /* ── Trivia ── */
+  .trivia-section { margin-top: 4px; }
+
+  .trivia-yesterday {
+    display: none;
+    background: rgba(255,255,255,0.06);
+    border-radius: 5px; padding: 10px 14px;
+    margin-bottom: 10px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .trivia-yday-label { font-size: 10px; font-weight: 700; color: #f59e0b; letter-spacing: 0.08em; text-transform: uppercase; }
+  .trivia-yday-q { font-size: 12px; color: rgba(255,255,255,0.6); font-style: italic; }
+  .trivia-yday-a { font-size: 13px; font-weight: 700; color: #22c55e; }
+  .trivia-yday-fact { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+  .trivia-q-card {
+    background: var(--nsw-dark); border-radius: var(--radius);
+    padding: 18px 20px; margin-bottom: 8px;
+    border-left: 4px solid #f59e0b;
+    position: relative; overflow: hidden;
+  }
+  .trivia-q-card::after {
+    content: '🧠'; position: absolute; right: 16px; top: 50%;
+    transform: translateY(-50%); font-size: 36px; opacity: 0.15;
+    pointer-events: none;
+  }
+  .trivia-label { font-size: 10px; font-weight: 700; color: #f59e0b; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .trivia-question { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 14px; }
+  .trivia-options { display: flex; flex-direction: column; gap: 7px; }
+  .trivia-opt {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 5px; padding: 9px 14px;
+    font-size: 13px; color: rgba(255,255,255,0.85);
+    cursor: pointer; transition: background .15s, border-color .15s;
+    text-align: left; font-family: 'Public Sans', sans-serif; font-weight: 500;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .trivia-opt:hover:not(:disabled) { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
+  .trivia-opt.correct { background: rgba(34,197,94,0.25); border-color: #22c55e; color: #fff; }
+  .trivia-opt.wrong { background: rgba(239,68,68,0.2); border-color: #ef4444; color: rgba(255,255,255,0.6); }
+  .trivia-opt:disabled { cursor: default; }
+  .trivia-opt-letter { width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.15); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .trivia-reveal { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.6; padding: 10px 14px; background: rgba(255,255,255,0.06); border-radius: 5px; display: none; }
+  .trivia-next-btn {
+    margin-top: 10px; background: #f59e0b; color: #fff;
+    font-size: 12px; font-weight: 700; padding: 7px 16px;
+    border-radius: 5px; border: none; cursor: pointer;
+    font-family: 'Public Sans', sans-serif; display: none;
+  }
+  .trivia-next-btn:hover { background: #d97706; }
+  .trivia-score-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .trivia-score { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .trivia-score strong { color: #f59e0b; }
+
+  .facts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 8px; }
+  .fact-card {
+    background: var(--nsw-white); border: 1px solid var(--nsw-grey4);
+    border-radius: var(--radius); padding: 12px 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .fact-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .fact-text { font-size: 12px; color: var(--nsw-grey1); line-height: 1.55; }
+  .fact-text strong { color: var(--nsw-dark); display: block; margin-bottom: 2px; font-size: 12px; }
+
+
+  /* ── Standings layout with side panel ── */
+  .standings-layout { display: grid; grid-template-columns: 1fr 280px; gap: 16px; align-items: start; }
+  @media (max-width: 720px) { .standings-layout { grid-template-columns: 1fr; } }
+
+  /* ── Scorer panel ── */
+  .scorer-panel { position: sticky; top: 56px; }
+  .scorer-panel-card { background: var(--nsw-dark); border-radius: var(--radius); overflow: hidden; }
+  .scorer-panel-hdr { padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .scorer-panel-title { font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 7px; }
+  .scorer-panel-title i { color: #f59e0b; font-size: 16px; }
+  .scorer-panel-sub { font-size: 10px; color: rgba(255,255,255,0.4); }
+  .scorer-panel-body { padding: 8px 0; }
+  .scorer-row { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .scorer-row:last-child { border-bottom: none; }
+  .scorer-pos { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.35); width: 16px; text-align: center; flex-shrink: 0; }
+  .scorer-pos.gold { color: #f59e0b; }
+  .scorer-pos.silver { color: #cbd5e1; }
+  .scorer-pos.bronze { color: #d97706; }
+  .scorer-flag { font-size: 18px; flex-shrink: 0; }
+  .scorer-info { flex: 1; min-width: 0; }
+  .scorer-nm { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .scorer-country { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+  .scorer-goals-badge { background: var(--nsw-accent); color: #fff; font-size: 13px; font-weight: 700; min-width: 28px; height: 28px; border-radius: 14px; display: flex; align-items: center; justify-content: center; padding: 0 7px; flex-shrink: 0; }
+  .scorer-panel-pending { padding: 20px 14px; text-align: center; color: rgba(255,255,255,0.35); font-size: 12px; line-height: 1.6; }
+  .scorer-panel-pending i { font-size: 24px; display: block; margin-bottom: 8px; color: rgba(255,255,255,0.15); }
+  .scorer-panel-footer { padding: 8px 14px; border-top: 1px solid rgba(255,255,255,0.08); }
+  .scorer-panel-footer a { font-size: 10px; color: var(--nsw-supp); display: flex; align-items: center; justify-content: center; gap: 4px; }
+  .scorer-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: blink 1.4s infinite; display: inline-block; }
+
+  /* ── Briefing two-column layout ── */
+  .briefing-layout { display: grid; grid-template-columns: 240px 1fr 240px; gap: 14px; align-items: start; }
+  @media (max-width: 900px) { .briefing-layout { grid-template-columns: 1fr; } }
+
+  /* ── Leaderboard panel ── */
+  .lb-panel { position: sticky; top: 56px; }
+  .lb-card { background: var(--nsw-dark); border-radius: var(--radius); overflow: hidden; }
+  .lb-hdr { background: var(--nsw-accent); padding: 10px 14px; }
+  .lb-hdr-top { display: flex; align-items: center; gap: 8px; }
+  .lb-hdr-title { font-size: 13px; font-weight: 700; color: #fff; }
+  .lb-hdr-sub { font-size: 10px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+  .lb-body { padding: 6px 0; }
+  .lb-row { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid rgba(255,255,255,0.06); transition: background .12s; }
+  .lb-row:last-child { border-bottom: none; }
+  .lb-row:hover { background: rgba(255,255,255,0.04); }
+  .lb-pos { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.3); width: 18px; text-align: center; flex-shrink: 0; }
+  .lb-pos.p1 { color: #f59e0b; }
+  .lb-pos.p2 { color: #94a3b8; }
+  .lb-pos.p3 { color: #d97706; }
+  .lb-flag { font-size: 20px; flex-shrink: 0; }
+  .lb-info { flex: 1; min-width: 0; }
+  .lb-name { font-size: 13px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lb-team { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 1px; }
+  .lb-pts { text-align: right; flex-shrink: 0; }
+  .lb-pts-num { font-size: 16px; font-weight: 700; color: #fff; line-height: 1; }
+  .lb-pts-lbl { font-size: 9px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.05em; }
+  .lb-footer { padding: 10px 14px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 10px; color: rgba(255,255,255,0.3); text-align: center; }
+  .lb-placeholder { padding: 20px 14px; text-align: center; color: rgba(255,255,255,0.3); font-size: 12px; line-height: 1.7; }
+  .lb-placeholder i { font-size: 28px; display: block; margin-bottom: 8px; color: rgba(255,255,255,0.12); }
+  .lb-coming-soon { display: inline-block; font-size: 9px; font-weight: 700; background: rgba(245,158,11,0.2); color: #f59e0b; padding: 2px 8px; border-radius: 10px; margin-top: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ── Right Panel ── */
+  .briefing-right-panel { display: flex; flex-direction: column; gap: 12px; }
+  .rp-card { background: var(--nsw-dark); border-radius: var(--radius); overflow: hidden; }
+  .rp-hdr { padding: 9px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .rp-title { font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 7px; }
+  .rp-title i { color: #f59e0b; }
+  .rp-sub { font-size: 10px; color: rgba(255,255,255,0.4); }
+
+  /* Team grid */
+  .team-grid-scroll { max-height: 340px; overflow-y: auto; padding: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; background: rgba(0,0,0,0.15); }
+  .team-grid-scroll::-webkit-scrollbar { width: 3px; }
+  .team-grid-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+  .team-tile { background: rgba(255,255,255,0.08); border-radius: 5px; padding: 7px 9px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: background .12s; border: 1px solid rgba(255,255,255,0.1); }
+  .team-tile:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.25); }
+  .team-tile-flag { flex-shrink: 0; width: 30px; display: flex; align-items: center; justify-content: center; }
+  .team-tile-info { min-width: 0; flex: 1; }
+  .team-tile-name { font-size: 11px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .team-tile-grp { font-size: 9px; color: rgba(255,255,255,0.65); margin-top: 1px; font-weight: 500; }
+  .grp-filter-strip { display: flex; flex-wrap: wrap; gap: 3px; padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .grp-filter-btn { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 3px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); border: none; cursor: pointer; font-family: 'Public Sans', sans-serif; transition: background .12s; }
+  .grp-filter-btn.active { background: var(--nsw-accent); color: #fff; }
+  .grp-filter-btn:hover:not(.active) { background: rgba(255,255,255,0.15); }
+
+  /* Upcoming matches mini */
+  .mini-match { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .mini-match:last-child { border-bottom: none; }
+  .mini-grp { font-size: 9px; font-weight: 700; background: var(--nsw-accent); color: #fff; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; }
+  .mini-teams { flex: 1; font-size: 12px; color: #ffffff; font-weight: 600; }
+  .mini-time { font-size: 10px; color: rgba(255,255,255,0.7); flex-shrink: 0; text-align: right; line-height: 1.4; font-weight: 500; }
+  .mini-date { font-size: 9px; color: rgba(255,255,255,0.5); }
+  .rp-see-more { padding: 8px 14px; text-align: center; }
+  .rp-see-more a { font-size: 10px; color: var(--nsw-supp); }
   /* ── Footer ── */
   .da-footer { text-align: center; font-size: 10px; color: var(--nsw-grey2); padding: 16px 24px 0; border-top: 1px solid var(--nsw-grey4); margin: 0 24px; }
   .da-footer a { color: var(--nsw-supp); }
@@ -265,16 +423,48 @@
 
     <!-- ══ DAILY BRIEFING ══ -->
     <div id="tab-briefing" class="tab-pane active">
+      <div class="briefing-layout">
+
+        <!-- LEFT: Assurance Fanatics Leaderboard -->
+        <div class="lb-panel">
+          <a href="sweepstake.html" target="_blank" rel="noopener" style="text-decoration:none;display:block;" title="Open Assurance Fanatics Sweepstake">
+          <div class="lb-card" style="cursor:pointer;transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.4)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+            <div class="lb-hdr" style="display:flex;align-items:center;justify-content:space-between;">
+              <div class="lb-hdr-top">
+                <i class="ti ti-trophy" style="color:#fff;font-size:16px;"></i>
+                <div>
+                  <div class="lb-hdr-title">Assurance Fanatics</div>
+                  <div class="lb-hdr-sub">Sweepstake leaderboard</div>
+                </div>
+              </div>
+              <i class="ti ti-external-link" style="color:rgba(255,255,255,0.7);font-size:14px;"></i>
+            </div>
+            <div class="lb-body" id="lb-body">
+              <div class="lb-placeholder">
+                <i class="ti ti-users"></i>
+                Team names coming soon
+                <br>Leaderboard will go live when the tournament starts
+                <br><span class="lb-coming-soon">⚽ 11 Jun 2026</span>
+              </div>
+            </div>
+            <div class="lb-footer" style="display:flex;align-items:center;justify-content:space-between;">
+              <span>Points update after each match · 3pts win · 1pt draw</span>
+              <span style="color:var(--nsw-supp);font-size:10px;font-weight:600;">Open ↗</span>
+            </div>
+          </div>
+          </a>
+        </div>
+
+        <!-- RIGHT: Main briefing content -->
+        <div class="briefing-main">
       <div class="briefing-card">
         <div class="briefing-label" id="briefing-date">Loading…</div>
         <div class="briefing-headline" id="briefing-headline"><span class="spin">⟳</span> Fetching today's World Cup briefing…</div>
         <div class="briefing-body" id="briefing-body"></div>
         <div class="briefing-source" id="briefing-source"></div>
+        <div class="briefing-news" id="briefing-news" style="display:none;"></div>
       </div>
 
-      <a id="open-claude-btn" class="open-claude-btn" href="#" target="_blank" rel="noopener">
-        <i class="ti ti-external-link"></i> ⚽ Open in Football
-      </a>
 
       <div class="section-title">Live football news</div>
       <div id="news-items">
@@ -310,12 +500,55 @@
         </a>
       </div>
 
+
+      <div class="section-title" style="margin-top:20px;">🧠 Daily trivia</div>
+      <div class="trivia-section">
+        <div class="trivia-q-card">
+          <div id="trivia-yesterday" class="trivia-yesterday" style="display:none;"></div>
+          <div class="trivia-score-row">
+            <div class="trivia-label">Question of the day</div>
+            <div class="trivia-score">Score: <strong id="trivia-score">0</strong> / <span id="trivia-total">0</span></div>
+          </div>
+          <div class="trivia-question" id="trivia-question">Loading today's question…</div>
+          <div class="trivia-options" id="trivia-options"></div>
+          <div class="trivia-reveal" id="trivia-reveal"></div>
+          <div class="trivia-next-btn" id="trivia-next" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:20px;">⚡ Fun facts</div>
+      <div class="facts-grid" id="facts-grid"></div>
+
       <div class="qa-strip" style="margin-top:14px;">
         <a class="qa-btn" id="qa-results" href="#" target="_blank">Yesterday's results ↗</a>
         <a class="qa-btn" id="qa-upsets" href="#" target="_blank">Biggest upsets ↗</a>
         <a class="qa-btn" id="qa-player" href="#" target="_blank">Player of the day ↗</a>
         <a class="qa-btn" id="qa-standings" href="#" target="_blank">Live standings ↗</a>
       </div>
+        </div><!-- /briefing-main -->
+
+        <!-- RIGHT: Teams & Upcoming Matches -->
+        <div class="briefing-right-panel">
+          <!-- Teams panel -->
+          <div class="rp-card">
+            <div class="rp-hdr">
+              <div class="rp-title"><i class="ti ti-shirt"></i> All 48 Teams</div>
+              <div class="rp-sub">2026 World Cup</div>
+            </div>
+            <div class="team-grid-scroll" id="team-grid"><div class="team-tile" data-group="A"><img src="https://flagcdn.com/32x24/mx.png" width="28" height="21" alt="Mexico" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Mexico</div><div class="team-tile-grp">Group A</div></div></div><div class="team-tile" data-group="A"><img src="https://flagcdn.com/32x24/kr.png" width="28" height="21" alt="South Korea" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">South Korea</div><div class="team-tile-grp">Group A</div></div></div><div class="team-tile" data-group="A"><img src="https://flagcdn.com/32x24/za.png" width="28" height="21" alt="South Africa" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">South Africa</div><div class="team-tile-grp">Group A</div></div></div><div class="team-tile" data-group="A"><img src="https://flagcdn.com/32x24/cz.png" width="28" height="21" alt="Czechia" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Czechia</div><div class="team-tile-grp">Group A</div></div></div><div class="team-tile" data-group="B"><img src="https://flagcdn.com/32x24/ca.png" width="28" height="21" alt="Canada" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Canada</div><div class="team-tile-grp">Group B</div></div></div><div class="team-tile" data-group="B"><img src="https://flagcdn.com/32x24/ba.png" width="28" height="21" alt="Bosnia & Herz." style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Bosnia & Herz.</div><div class="team-tile-grp">Group B</div></div></div><div class="team-tile" data-group="B"><img src="https://flagcdn.com/32x24/qa.png" width="28" height="21" alt="Qatar" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Qatar</div><div class="team-tile-grp">Group B</div></div></div><div class="team-tile" data-group="B"><img src="https://flagcdn.com/32x24/ch.png" width="28" height="21" alt="Switzerland" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Switzerland</div><div class="team-tile-grp">Group B</div></div></div><div class="team-tile" data-group="C"><img src="https://flagcdn.com/32x24/br.png" width="28" height="21" alt="Brazil" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Brazil</div><div class="team-tile-grp">Group C</div></div></div><div class="team-tile" data-group="C"><img src="https://flagcdn.com/32x24/ma.png" width="28" height="21" alt="Morocco" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Morocco</div><div class="team-tile-grp">Group C</div></div></div><div class="team-tile" data-group="C"><img src="https://flagcdn.com/32x24/ht.png" width="28" height="21" alt="Haiti" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Haiti</div><div class="team-tile-grp">Group C</div></div></div><div class="team-tile" data-group="C"><img src="https://flagcdn.com/32x24/gb-sct.png" width="28" height="21" alt="Scotland" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Scotland</div><div class="team-tile-grp">Group C</div></div></div><div class="team-tile" data-group="D"><img src="https://flagcdn.com/32x24/us.png" width="28" height="21" alt="United States" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">United States</div><div class="team-tile-grp">Group D</div></div></div><div class="team-tile" data-group="D"><img src="https://flagcdn.com/32x24/py.png" width="28" height="21" alt="Paraguay" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Paraguay</div><div class="team-tile-grp">Group D</div></div></div><div class="team-tile" data-group="D"><img src="https://flagcdn.com/32x24/au.png" width="28" height="21" alt="Australia" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Australia</div><div class="team-tile-grp">Group D</div></div></div><div class="team-tile" data-group="D"><img src="https://flagcdn.com/32x24/tr.png" width="28" height="21" alt="Turkey" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Turkey</div><div class="team-tile-grp">Group D</div></div></div><div class="team-tile" data-group="E"><img src="https://flagcdn.com/32x24/de.png" width="28" height="21" alt="Germany" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Germany</div><div class="team-tile-grp">Group E</div></div></div><div class="team-tile" data-group="E"><img src="https://flagcdn.com/32x24/cw.png" width="28" height="21" alt="Curaçao" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Curaçao</div><div class="team-tile-grp">Group E</div></div></div><div class="team-tile" data-group="E"><img src="https://flagcdn.com/32x24/ci.png" width="28" height="21" alt="Ivory Coast" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Ivory Coast</div><div class="team-tile-grp">Group E</div></div></div><div class="team-tile" data-group="E"><img src="https://flagcdn.com/32x24/ec.png" width="28" height="21" alt="Ecuador" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Ecuador</div><div class="team-tile-grp">Group E</div></div></div><div class="team-tile" data-group="F"><img src="https://flagcdn.com/32x24/nl.png" width="28" height="21" alt="Netherlands" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Netherlands</div><div class="team-tile-grp">Group F</div></div></div><div class="team-tile" data-group="F"><img src="https://flagcdn.com/32x24/jp.png" width="28" height="21" alt="Japan" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Japan</div><div class="team-tile-grp">Group F</div></div></div><div class="team-tile" data-group="F"><img src="https://flagcdn.com/32x24/se.png" width="28" height="21" alt="Sweden" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Sweden</div><div class="team-tile-grp">Group F</div></div></div><div class="team-tile" data-group="F"><img src="https://flagcdn.com/32x24/tn.png" width="28" height="21" alt="Tunisia" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Tunisia</div><div class="team-tile-grp">Group F</div></div></div><div class="team-tile" data-group="G"><img src="https://flagcdn.com/32x24/be.png" width="28" height="21" alt="Belgium" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Belgium</div><div class="team-tile-grp">Group G</div></div></div><div class="team-tile" data-group="G"><img src="https://flagcdn.com/32x24/eg.png" width="28" height="21" alt="Egypt" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Egypt</div><div class="team-tile-grp">Group G</div></div></div><div class="team-tile" data-group="G"><img src="https://flagcdn.com/32x24/ir.png" width="28" height="21" alt="Iran" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Iran</div><div class="team-tile-grp">Group G</div></div></div><div class="team-tile" data-group="G"><img src="https://flagcdn.com/32x24/nz.png" width="28" height="21" alt="New Zealand" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">New Zealand</div><div class="team-tile-grp">Group G</div></div></div><div class="team-tile" data-group="H"><img src="https://flagcdn.com/32x24/es.png" width="28" height="21" alt="Spain" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Spain</div><div class="team-tile-grp">Group H</div></div></div><div class="team-tile" data-group="H"><img src="https://flagcdn.com/32x24/cv.png" width="28" height="21" alt="Cape Verde" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Cape Verde</div><div class="team-tile-grp">Group H</div></div></div><div class="team-tile" data-group="H"><img src="https://flagcdn.com/32x24/sa.png" width="28" height="21" alt="Saudi Arabia" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Saudi Arabia</div><div class="team-tile-grp">Group H</div></div></div><div class="team-tile" data-group="H"><img src="https://flagcdn.com/32x24/uy.png" width="28" height="21" alt="Uruguay" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Uruguay</div><div class="team-tile-grp">Group H</div></div></div><div class="team-tile" data-group="I"><img src="https://flagcdn.com/32x24/fr.png" width="28" height="21" alt="France" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">France</div><div class="team-tile-grp">Group I</div></div></div><div class="team-tile" data-group="I"><img src="https://flagcdn.com/32x24/sn.png" width="28" height="21" alt="Senegal" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Senegal</div><div class="team-tile-grp">Group I</div></div></div><div class="team-tile" data-group="I"><img src="https://flagcdn.com/32x24/iq.png" width="28" height="21" alt="Iraq" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Iraq</div><div class="team-tile-grp">Group I</div></div></div><div class="team-tile" data-group="I"><img src="https://flagcdn.com/32x24/no.png" width="28" height="21" alt="Norway" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Norway</div><div class="team-tile-grp">Group I</div></div></div><div class="team-tile" data-group="J"><img src="https://flagcdn.com/32x24/ar.png" width="28" height="21" alt="Argentina" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Argentina</div><div class="team-tile-grp">Group J</div></div></div><div class="team-tile" data-group="J"><img src="https://flagcdn.com/32x24/dz.png" width="28" height="21" alt="Algeria" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Algeria</div><div class="team-tile-grp">Group J</div></div></div><div class="team-tile" data-group="J"><img src="https://flagcdn.com/32x24/at.png" width="28" height="21" alt="Austria" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Austria</div><div class="team-tile-grp">Group J</div></div></div><div class="team-tile" data-group="J"><img src="https://flagcdn.com/32x24/jo.png" width="28" height="21" alt="Jordan" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Jordan</div><div class="team-tile-grp">Group J</div></div></div><div class="team-tile" data-group="K"><img src="https://flagcdn.com/32x24/pt.png" width="28" height="21" alt="Portugal" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Portugal</div><div class="team-tile-grp">Group K</div></div></div><div class="team-tile" data-group="K"><img src="https://flagcdn.com/32x24/cd.png" width="28" height="21" alt="DR Congo" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">DR Congo</div><div class="team-tile-grp">Group K</div></div></div><div class="team-tile" data-group="K"><img src="https://flagcdn.com/32x24/uz.png" width="28" height="21" alt="Uzbekistan" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Uzbekistan</div><div class="team-tile-grp">Group K</div></div></div><div class="team-tile" data-group="K"><img src="https://flagcdn.com/32x24/co.png" width="28" height="21" alt="Colombia" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Colombia</div><div class="team-tile-grp">Group K</div></div></div><div class="team-tile" data-group="L"><img src="https://flagcdn.com/32x24/gb-eng.png" width="28" height="21" alt="England" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">England</div><div class="team-tile-grp">Group L</div></div></div><div class="team-tile" data-group="L"><img src="https://flagcdn.com/32x24/hr.png" width="28" height="21" alt="Croatia" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Croatia</div><div class="team-tile-grp">Group L</div></div></div><div class="team-tile" data-group="L"><img src="https://flagcdn.com/32x24/gh.png" width="28" height="21" alt="Ghana" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Ghana</div><div class="team-tile-grp">Group L</div></div></div><div class="team-tile" data-group="L"><img src="https://flagcdn.com/32x24/pa.png" width="28" height="21" alt="Panama" style="border-radius:2px;object-fit:cover;flex-shrink:0;"><div class="team-tile-info"><div class="team-tile-name">Panama</div><div class="team-tile-grp">Group L</div></div></div></div>
+          </div>
+
+          <!-- Upcoming matches panel -->
+          <div class="rp-card">
+            <div class="rp-hdr">
+              <div class="rp-title"><i class="ti ti-calendar-event"></i> Next Fixtures</div>
+              <div class="rp-sub"><span class="scorer-live-dot"></span> Upcoming</div>
+            </div>
+            <div id="mini-fixtures"></div>
+            <div class="rp-see-more"><a id="qa-full-fix" href="#" target="_blank">Full schedule in Tracker ↗</a></div>
+          </div>
+        </div>
+      </div><!-- /briefing-layout -->
     </div>
 
     <!-- ══ SCORES ══ -->
@@ -409,7 +642,7 @@
         <div class="mbadge upcoming">Upcoming</div>
       </div>
       <div style="text-align:center;margin-top:12px;">
-        <a class="qa-btn" style="font-size:12px;padding:8px 20px;" id="qa-allscores" href="#" target="_blank">View all results in Claude ↗</a>
+        <a class="qa-btn" style="font-size:12px;padding:8px 20px;" id="qa-allscores" href="#" target="_blank">View all results in Tracker ↗</a>
       </div>
     </div>
 
@@ -419,7 +652,27 @@
         <a class="qa-btn" id="qa-livestand" href="#" target="_blank">Live standings now ↗</a>
         <a class="qa-btn" id="qa-qualified" href="#" target="_blank">Who has qualified? ↗</a>
       </div>
-      <div class="groups-grid" id="groups-grid"></div>
+      <div class="standings-layout">
+        <div class="groups-grid" id="groups-grid"></div>
+        <div class="scorer-panel">
+          <div class="scorer-panel-card">
+            <div class="scorer-panel-hdr">
+              <div class="scorer-panel-title"><i class="ti ti-shoe"></i> Top Goal Scorers</div>
+              <div class="scorer-panel-sub"><span class="scorer-live-dot"></span> Live</div>
+            </div>
+            <div class="scorer-panel-body" id="scorer-panel-body">
+              <div class="scorer-panel-pending">
+                <i class="ti ti-clock"></i>
+                Tournament kicks off<br>11 June 2026<br>
+                <span style="font-size:10px;">Scorer data live from kickoff</span>
+              </div>
+            </div>
+            <div class="scorer-panel-footer">
+              <a id="qa-scorer-panel" href="#" target="_blank"><i class="ti ti-external-link" style="font-size:11px;"></i> Full scorer stats in Tracker</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ══ TOP SCORERS ══ -->
@@ -466,7 +719,7 @@
         <div class="fix-row"><div class="grp-tag">I</div><div class="fix-teams"><span>🇫🇷 France</span><span class="fix-vs">vs</span><span>🇸🇳 Senegal</span></div><div class="fix-time">6:00 PM ET</div><div class="fix-venue">Hard Rock, Miami</div></div>
       </div>
       <div style="text-align:center;">
-        <a class="qa-btn" style="font-size:12px;padding:8px 20px;" id="qa-fullsched" href="#" target="_blank">Full schedule in Claude ↗</a>
+        <a class="qa-btn" style="font-size:12px;padding:8px 20px;" id="qa-fullsched" href="#" target="_blank">Full schedule in Tracker ↗</a>
       </div>
     </div>
 
@@ -528,7 +781,6 @@ function claudeUrl(prompt) {
 function setClaudeLinks() {
   const today = new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'});
   const pairs = [
-    ['open-claude-btn',    `Give me a detailed 2026 FIFA World Cup match report for ${today} including all scorelines, goalscorers and key moments from yesterday's matches`],
     ['qa-results',        `Show me all 2026 FIFA World Cup match results from ${today}`],
     ['qa-upsets',         'What are the biggest upsets so far in the 2026 FIFA World Cup?'],
     ['qa-player',         `Who had the standout individual performance at the 2026 FIFA World Cup yesterday ${today}?`],
@@ -542,6 +794,8 @@ function setClaudeLinks() {
     ['qa-topscorers',     'Who are the top scorers at the 2026 FIFA World Cup right now with goal tallies?'],
     ['qa-assists',        'Who has the most assists at the 2026 FIFA World Cup so far?'],
     ['qa-totalgoals',     'How many goals have been scored in total at the 2026 FIFA World Cup so far?'],
+    ['qa-scorer-panel', `Who are the top goal scorers at the 2026 FIFA World Cup right now with goals tally?`],
+    ['qa-full-fix', `Show me the full 2026 FIFA World Cup fixture schedule for all groups`],
     ['qa-goldenboot',     'Who are the favourites to win the 2026 FIFA World Cup Golden Boot based on current form?'],
     ['qa-fullsched',      'Show me the complete 2026 FIFA World Cup group stage fixture schedule for all 12 groups'],
   ];
@@ -576,38 +830,388 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
-function buildBriefing() {
+async function buildBriefing() {
   const today = new Date();
   const dateStr = today.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const isoDate = today.toISOString().slice(0,10);
   document.getElementById('briefing-date').textContent = dateStr + ' · Daily Briefing';
-
   const tournamentStart = new Date('2026-06-11');
   const isLive = today >= tournamentStart;
-
-  if (isLive) {
-    const prompt = `Give me an outstanding, vivid, factually accurate daily briefing about yesterday's 2026 FIFA World Cup matches. Include the most remarkable result, key goalscorers, any upsets, and what it means for group standings. Then list 3 short notable news items from the tournament.`;
-    document.getElementById('briefing-headline').textContent = '⚽ Open today's briefing in Football';
-    document.getElementById('briefing-body').textContent = 'Click the button below to open Claude and get a live, search-powered commentary on all of yesterday\'s matches — scorelines, goalscorers, upsets and talking points, freshly generated every day.';
-    document.getElementById('briefing-source').textContent = 'Powered by Claude with live web search';
-    document.getElementById('open-claude-btn').href = claudeUrl(prompt);
-    // news links are static HTML — no JS override needed
-  } else {
-    const daysTo = Math.ceil((tournamentStart - today) / 86400000);
-    document.getElementById('briefing-headline').textContent = `${daysTo} days until the greatest show on earth`;
-    document.getElementById('briefing-body').textContent = 'The most expanded FIFA World Cup in history kicks off on 11 June 2026 at the iconic Estadio Azteca in Mexico City. For the first time ever, three nations co-host — the USA, Canada and Mexico — across 16 venues. 48 teams, 104 matches, one champion.';
-    document.getElementById('briefing-source').textContent = 'Pre-tournament · Briefings go live on 12 June 2026';
-    document.getElementById('open-claude-btn').href = claudeUrl('Give me the latest 2026 FIFA World Cup pre-tournament news and which teams are favourites to win');
-    document.getElementById('news-items').innerHTML = [
-      ['🌎 Three nations, one tournament','The USA hosts 78 of the 104 matches across 11 cities, with Canada and Mexico hosting 13 each.'],
-      ['⭐ Opening match: Mexico vs South Africa','The Azteca opens the tournament on 11 June 2026 — a venue that hosted the 1970 and 1986 World Cup finals.'],
-      ['🏆 Final: MetLife Stadium, New Jersey','The world's biggest sporting event concludes on 19 July 2026 in East Rutherford, NJ.']
-    ].map(([t,d]) => `<div class="news-item"><div class="news-title">${t}</div><div class="news-detail">${d}</div></div>`).join('');
+  const daysTo = Math.max(0, Math.ceil((tournamentStart - today) / 86400000));
+  document.getElementById('briefing-headline').innerHTML = '<span class="briefing-loading"><span class="spin">&#8635;</span> Fetching today's World Cup briefing…</span>';
+  document.getElementById('briefing-body').textContent = '';
+  document.getElementById('briefing-source').textContent = '';
+  const newsEl = document.getElementById('briefing-news');
+  if (newsEl) { newsEl.style.display = 'none'; newsEl.innerHTML = ''; }
+  const sysPrompt = isLive
+    ? `Today is ${isoDate}. You are a vivid football journalist. Search for the latest 2026 FIFA World Cup news and yesterday results. Return ONLY valid JSON no markdown no backticks: {"headline":"Outstanding factual headline","body":"2-3 vivid accurate sentences with real scores and names","source":"Live data via web search","news":[{"title":"Story 1","detail":"One true sentence."},{"title":"Story 2","detail":"One true sentence."},{"title":"Story 3","detail":"One true sentence."}]}`
+    : `Today is ${isoDate}. 2026 FIFA World Cup starts 11 June 2026 in ${daysTo} days. Search for latest pre-tournament news. Return ONLY valid JSON no markdown no backticks: {"headline":"Compelling pre-tournament headline","body":"2-3 vivid pre-tournament sentences based on real news","source":"Pre-tournament via web search","news":[{"title":"Team news","detail":"One true sentence."},{"title":"Tournament story","detail":"One true sentence."},{"title":"Prediction","detail":"One true sentence."}]}`;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514', max_tokens: 800,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        system: sysPrompt,
+        messages: [{ role: 'user', content: `Search for 2026 FIFA World Cup news as of ${isoDate} and return the JSON briefing.` }]
+      })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    let raw = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    raw = raw.replace(/```json|```/g,'').trim();
+    const j = JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}')+1));
+    document.getElementById('briefing-headline').textContent = j.headline || 'World Cup 2026';
+    document.getElementById('briefing-body').textContent = j.body || '';
+    document.getElementById('briefing-source').textContent = j.source || '';
+    if (j.news && j.news.length && newsEl) {
+      newsEl.innerHTML = j.news.map(n=>`<div class="briefing-news-item"><div class="briefing-news-dot"></div><div class="briefing-news-text"><strong>${n.title}</strong> ${n.detail}</div></div>`).join('');
+      newsEl.style.display = 'flex';
+    }
+  } catch(e) {
+    if (isLive) {
+      document.getElementById('briefing-headline').textContent = 'FIFA World Cup 2026 is underway';
+      document.getElementById('briefing-body').textContent = 'Check the news links below for live match reports and scores.';
+    } else {
+      document.getElementById('briefing-headline').textContent = daysTo + ' days until the greatest show on earth';
+      document.getElementById('briefing-body').textContent = 'The most expanded FIFA World Cup in history kicks off 11 June 2026 at the Estadio Azteca, Mexico City. Three nations co-host — USA, Canada and Mexico — across 16 venues. 48 teams, 104 matches, one champion.';
+    }
+    document.getElementById('briefing-source').innerHTML = 'Showing pre-loaded content · <button class="briefing-retry" onclick="buildBriefing()">Retry &#8635;</button>';
   }
 }
 
-buildGroups();
-setClaudeLinks();
-buildBriefing();
+
+
+const TRIVIA_BANK = [
+  {
+    q: "Which country has won the FIFA World Cup the most times?",
+    opts: ["Germany", "Brazil", "Italy", "Argentina"],
+    ans: 1,
+    fact: "Brazil has won 5 World Cups — 1958, 1962, 1970, 1994 and 2002. Germany and Italy have 4 each."
+  },
+  {
+    q: "How many teams are competing in the 2026 FIFA World Cup?",
+    opts: ["32", "40", "48", "64"],
+    ans: 2,
+    fact: "2026 is the first World Cup with 48 teams, expanded from 32. The group stage alone has 104 matches."
+  },
+  {
+    q: "Which stadium will host the 2026 FIFA World Cup Final?",
+    opts: ["SoFi Stadium, LA", "AT&T Stadium, Dallas", "MetLife Stadium, NJ", "Estadio Azteca, Mexico City"],
+    ans: 2,
+    fact: "MetLife Stadium in East Rutherford, New Jersey will host the Final on 19 July 2026, making it the venue of the world's biggest sporting event."
+  },
+  {
+    q: "Who holds the record for most goals scored in a single World Cup tournament?",
+    opts: ["Ronaldo", "Just Fontaine", "Pelé", "Miroslav Klose"],
+    ans: 1,
+    fact: "Just Fontaine (France) scored 13 goals at the 1958 World Cup in Sweden — a record that has stood for over 65 years."
+  },
+  {
+    q: "Which city will host the opening match of the 2026 World Cup?",
+    opts: ["Los Angeles", "Toronto", "Mexico City", "New York"],
+    ans: 2,
+    fact: "Mexico City's Estadio Azteca hosts the opening match on 11 June 2026 — the same stadium that hosted the 1970 and 1986 World Cup Finals."
+  },
+  {
+    q: "Which player has appeared in the most FIFA World Cup matches?",
+    opts: ["Lionel Messi", "Miroslav Klose", "Lothar Matthäus", "Cristiano Ronaldo"],
+    ans: 2,
+    fact: "Lothar Matthäus played 25 World Cup matches across five tournaments (1982–1998). Miroslav Klose is the all-time top scorer with 16 goals."
+  },
+  {
+    q: "How many nations are co-hosting the 2026 FIFA World Cup?",
+    opts: ["1", "2", "3", "4"],
+    ans: 2,
+    fact: "The USA, Canada and Mexico are co-hosting — the first time three nations have shared hosting duties in World Cup history."
+  },
+  {
+    q: "What is the nickname of the FIFA World Cup trophy?",
+    opts: ["The Golden Cup", "The Jules Rimet Trophy", "The FIFA Cup", "The World Trophy"],
+    ans: 1,
+    fact: "The original trophy was the Jules Rimet Trophy, named after the FIFA president who created the World Cup in 1930. Brazil won it permanently in 1970 after their third title."
+  },
+  {
+    q: "Which World Cup had the highest average attendance per match?",
+    opts: ["USA 1994", "Brazil 2014", "Germany 2006", "France 1998"],
+    ans: 0,
+    fact: "USA 1994 averaged 68,991 fans per match — still the highest ever — helped by massive stadiums like the Rose Bowl in LA."
+  },
+  {
+    q: "Who scored the fastest hat-trick in World Cup history?",
+    opts: ["Hurst (England)", "Mbappe (France)", "Sándor Kocsis (Hungary)", "László Kiss (Hungary)"],
+    ans: 3,
+    fact: "László Kiss scored a hat-trick in just 7 minutes for Hungary vs El Salvador in 1982 — the fastest in World Cup history."
+  },
+];
+
+let triviaScore = 0;
+let triviaAnswered = 0;
+let triviaShuffled = [];
+let todayIdx = 0;
+let yesterdayIdx = 0;
+
+function getDayKey(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + (offset || 0));
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+function dateToIndex(dateStr) {
+  // Deterministic index from date string
+  let hash = 0;
+  for (let i = 0; i < dateStr.length; i++) {
+    hash = (hash * 31 + dateStr.charCodeAt(i)) >>> 0;
+  }
+  return hash % TRIVIA_BANK.length;
+}
+
+function shuffleTrivia() {
+  triviaShuffled = [...TRIVIA_BANK];
+  todayIdx = dateToIndex(getDayKey(0));
+  yesterdayIdx = dateToIndex(getDayKey(-1));
+}
+
+function renderTrivia() {
+  if (!triviaShuffled || triviaShuffled.length === 0) { shuffleTrivia(); }
+  if (todayIdx >= triviaShuffled.length) { todayIdx = 0; }
+  if (yesterdayIdx >= triviaShuffled.length) { yesterdayIdx = 0; }
+  const q = triviaShuffled[todayIdx];
+  const yq = triviaShuffled[yesterdayIdx];
+  if (!q) return;
+
+  // Show yesterday's answer at top if different question
+  const yesterdayEl = document.getElementById('trivia-yesterday');
+  if (yesterdayEl && todayIdx !== yesterdayIdx) {
+    yesterdayEl.style.display = 'block';
+    yesterdayEl.innerHTML = `<span class="trivia-yday-label">📅 Yesterday's answer</span><span class="trivia-yday-q">${yq.q}</span><span class="trivia-yday-a">✅ ${yq.opts[yq.ans]}</span><span class="trivia-yday-fact">💡 ${yq.fact}</span>`;
+  }
+
+  document.getElementById('trivia-question').textContent = q.q;
+  document.getElementById('trivia-reveal').style.display = 'none';
+  document.getElementById('trivia-reveal').textContent = '';
+  document.getElementById('trivia-next').style.display = 'none';
+  document.getElementById('trivia-total').textContent = triviaAnswered;
+  document.getElementById('trivia-score').textContent = triviaScore;
+
+  // Check if already answered today (localStorage)
+  const savedKey = 'trivia_' + getDayKey(0);
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(savedKey)); } catch(e) {}
+
+  const letters = ['A','B','C','D'];
+  document.getElementById('trivia-options').innerHTML = q.opts.map((o,i) => `
+    <button class="trivia-opt ${saved !== null ? (i === q.ans ? 'correct' : (i === saved ? 'wrong' : '')) : ''}"
+      onclick="answerTrivia(${i})" ${saved !== null ? 'disabled' : ''}>
+      <span class="trivia-opt-letter">${letters[i]}</span>${o}
+    </button>`).join('');
+
+  if (saved !== null) {
+    const reveal = document.getElementById('trivia-reveal');
+    reveal.textContent = '💡 ' + q.fact;
+    reveal.style.display = 'block';
+    document.getElementById('trivia-next').style.display = 'none';
+  }
+}
+
+function answerTrivia(chosen) {
+  const q = triviaShuffled[todayIdx];
+  const btns = document.querySelectorAll('.trivia-opt');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('correct');
+    else if (i === chosen && chosen !== q.ans) b.classList.add('wrong');
+  });
+  triviaAnswered++;
+  if (chosen === q.ans) triviaScore++;
+  document.getElementById('trivia-score').textContent = triviaScore;
+  document.getElementById('trivia-total').textContent = triviaAnswered;
+  const reveal = document.getElementById('trivia-reveal');
+  reveal.textContent = '💡 ' + q.fact;
+  reveal.style.display = 'block';
+  document.getElementById('trivia-next').style.display = 'none';
+  // Save answer for today
+  try { localStorage.setItem('trivia_' + getDayKey(0), JSON.stringify(chosen)); } catch(e) {}
+}
+
+function nextTrivia() {
+  // no-op for daily mode — question locked to today
+}
+
+
+const FACTS = [
+  { icon: '🏟️', title: '16 venues', text: 'Spread across 3 countries — 11 in the USA, 2 in Canada, 3 in Mexico.' },
+  { icon: '⚽', title: '104 matches', text: 'The most matches ever played in a single World Cup tournament.' },
+  { icon: '🌍', title: '211 nations tried', text: 'A record 211 nations entered qualifying for only 48 spots.' },
+  { icon: '🇧🇷', title: 'Brazil — 5-time champions', text: 'The most successful nation ever, but yet to win on North American soil.' },
+  { icon: '📅', title: 'Longest ever', text: 'The tournament runs 39 days — the longest in World Cup history.' },
+  { icon: '🏆', title: 'New champions likely', text: 'Of the last 5 winners, none have successfully defended the title.' },
+  { icon: '👟', title: 'Messi's last dance?', text: 'Lionel Messi, aged 38, may play his final World Cup in 2026.' },
+  { icon: '🎯', title: 'Top scorer record', text: 'Just Fontaine's 13 goals in 1958 remains the single-tournament record.' },
+  { icon: '🇦🇷', title: 'Defending champions', text: 'Argentina won the 2022 World Cup in Qatar, beating France on penalties.' },
+  { icon: '🗺️', title: 'Farthest venues', text: 'Seattle and Miami are ~3,300 miles apart — teams could travel more than some international flights.' },
+];
+
+function buildFacts() {
+  document.getElementById('facts-grid').innerHTML = FACTS.map(f => `
+    <div class="fact-card">
+      <div class="fact-icon">${f.icon}</div>
+      <div class="fact-text"><strong>${f.title}</strong>${f.text}</div>
+    </div>`).join('');
+}
+
+
+async function buildScorerPanel() {
+  const today = new Date();
+  const isoDate = today.toISOString().slice(0,10);
+  const tournamentStart = new Date('2026-06-11');
+  const isLive = today >= tournamentStart;
+  const panelBody = document.getElementById('scorer-panel-body');
+  if (!panelBody) return;
+
+  if (!isLive) return; // keep the pending message
+
+  panelBody.innerHTML = '<div class="scorer-panel-pending"><i class="ti ti-loader spin"></i>Loading scorers…</div>';
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 600,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        system: `Today is ${isoDate}. Search for the current 2026 FIFA World Cup top goal scorers. Return ONLY valid JSON, no markdown, no backticks: {"scorers":[{"name":"Player Name","country":"Country Name","flag":"🏳","goals":3},...],"total_goals":42,"last_updated":"${isoDate}"}. Include up to 10 scorers ordered by goals descending. Use real emoji flag for the country.`,
+        messages: [{ role: 'user', content: `Search for 2026 FIFA World Cup top scorers as of ${isoDate} and return the JSON.` }]
+      })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    let raw = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+    raw = raw.replace(/```json|```/g,'').trim();
+    const j = JSON.parse(raw.slice(raw.indexOf('{'), raw.lastIndexOf('}')+1));
+    const scorers = j.scorers || [];
+    if (!scorers.length) throw new Error('No scorers');
+
+    const posClass = (i) => i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    panelBody.innerHTML = scorers.map((s,i) => `
+      <div class="scorer-row">
+        <div class="scorer-pos ${posClass(i)}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+        <div class="scorer-flag">${s.flag||'🏳'}</div>
+        <div class="scorer-info">
+          <div class="scorer-nm">${s.name}</div>
+          <div class="scorer-country">${s.country}</div>
+        </div>
+        <div class="scorer-goals-badge">${s.goals}</div>
+      </div>`).join('');
+
+    if (j.total_goals) {
+      panelBody.innerHTML += `<div style="padding:8px 14px;font-size:10px;color:rgba(255,255,255,0.35);border-top:1px solid rgba(255,255,255,0.05);">Total goals scored: <strong style="color:rgba(255,255,255,0.6);">${j.total_goals}</strong></div>`;
+    }
+  } catch(e) {
+    panelBody.innerHTML = '<div class="scorer-panel-pending"><i class="ti ti-alert-circle"></i>Live data unavailable<br><button class="briefing-retry" style="margin-top:8px;" onclick="buildScorerPanel()">Retry ↺</button></div>';
+  }
+}
+
+
+const ALL_TEAMS = [
+  {f:'🇲🇽',n:'Mexico',g:'A'},{f:'🇰🇷',n:'South Korea',g:'A'},{f:'🇿🇦',n:'South Africa',g:'A'},{f:'🇨🇿',n:'Czechia',g:'A'},
+  {f:'🇨🇦',n:'Canada',g:'B'},{f:'🇧🇦',n:'Bosnia & Herz.',g:'B'},{f:'🇶🇦',n:'Qatar',g:'B'},{f:'🇨🇭',n:'Switzerland',g:'B'},
+  {f:'🇧🇷',n:'Brazil',g:'C'},{f:'🇲🇦',n:'Morocco',g:'C'},{f:'🇭🇹',n:'Haiti',g:'C'},{f:'🏴󠁧󠁢󠁳󠁣󠁴󠁿',n:'Scotland',g:'C'},
+  {f:'🇺🇸',n:'United States',g:'D'},{f:'🇵🇾',n:'Paraguay',g:'D'},{f:'🇦🇺',n:'Australia',g:'D'},{f:'🇹🇷',n:'Turkey',g:'D'},
+  {f:'🇩🇪',n:'Germany',g:'E'},{f:'🇨🇼',n:'Curaçao',g:'E'},{f:'🇨🇮',n:'Ivory Coast',g:'E'},{f:'🇪🇨',n:'Ecuador',g:'E'},
+  {f:'🇳🇱',n:'Netherlands',g:'F'},{f:'🇯🇵',n:'Japan',g:'F'},{f:'🇸🇪',n:'Sweden',g:'F'},{f:'🇹🇳',n:'Tunisia',g:'F'},
+  {f:'🇧🇪',n:'Belgium',g:'G'},{f:'🇪🇬',n:'Egypt',g:'G'},{f:'🇮🇷',n:'Iran',g:'G'},{f:'🇳🇿',n:'New Zealand',g:'G'},
+  {f:'🇪🇸',n:'Spain',g:'H'},{f:'🇨🇻',n:'Cape Verde',g:'H'},{f:'🇸🇦',n:'Saudi Arabia',g:'H'},{f:'🇺🇾',n:'Uruguay',g:'H'},
+  {f:'🇫🇷',n:'France',g:'I'},{f:'🇸🇳',n:'Senegal',g:'I'},{f:'🇮🇶',n:'Iraq',g:'I'},{f:'🇳🇴',n:'Norway',g:'I'},
+  {f:'🇦🇷',n:'Argentina',g:'J'},{f:'🇩🇿',n:'Algeria',g:'J'},{f:'🇦🇹',n:'Austria',g:'J'},{f:'🇯🇴',n:'Jordan',g:'J'},
+  {f:'🇵🇹',n:'Portugal',g:'K'},{f:'🇨🇩',n:'DR Congo',g:'K'},{f:'🇺🇿',n:'Uzbekistan',g:'K'},{f:'🇨🇴',n:'Colombia',g:'K'},
+  {f:'🏴󠁧󠁢󠁥󠁮󠁧󠁿',n:'England',g:'L'},{f:'🇭🇷',n:'Croatia',g:'L'},{f:'🇬🇭',n:'Ghana',g:'L'},{f:'🇵🇦',n:'Panama',g:'L'},
+];
+
+const ALL_FIXTURES = [
+  {g:'A',t:'<img src="https://flagcdn.com/20x15/mx.png" width="18" height="14" alt="Mexico" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Mexico vs <img src="https://flagcdn.com/20x15/za.png" width="18" height="14" alt="S.Africa" style="border-radius:1px;vertical-align:middle;margin-right:3px;">S.Africa',d:'11 Jun',time:'3:00 PM ET'},
+  {g:'A',t:'<img src="https://flagcdn.com/20x15/kr.png" width="18" height="14" alt="S.Korea" style="border-radius:1px;vertical-align:middle;margin-right:3px;">S.Korea vs <img src="https://flagcdn.com/20x15/cz.png" width="18" height="14" alt="Czechia" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Czechia',d:'11 Jun',time:'10:00 PM ET'},
+  {g:'B',t:'<img src="https://flagcdn.com/20x15/ca.png" width="18" height="14" alt="Canada" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Canada vs <img src="https://flagcdn.com/20x15/ba.png" width="18" height="14" alt="Bosnia" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Bosnia',d:'12 Jun',time:'3:00 PM ET'},
+  {g:'E',t:'<img src="https://flagcdn.com/20x15/de.png" width="18" height="14" alt="Germany" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Germany vs <img src="https://flagcdn.com/20x15/cw.png" width="18" height="14" alt="Curaçao" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Curaçao',d:'12 Jun',time:'6:00 PM ET'},
+  {g:'D',t:'<img src="https://flagcdn.com/20x15/us.png" width="18" height="14" alt="USA" style="border-radius:1px;vertical-align:middle;margin-right:3px;">USA vs <img src="https://flagcdn.com/20x15/py.png" width="18" height="14" alt="Paraguay" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Paraguay',d:'12 Jun',time:'9:00 PM ET'},
+  {g:'B',t:'<img src="https://flagcdn.com/20x15/qa.png" width="18" height="14" alt="Qatar" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Qatar vs <img src="https://flagcdn.com/20x15/ch.png" width="18" height="14" alt="Switzerland" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Switzerland',d:'13 Jun',time:'3:00 PM ET'},
+  {g:'C',t:'<img src="https://flagcdn.com/20x15/br.png" width="18" height="14" alt="Brazil" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Brazil vs <img src="https://flagcdn.com/20x15/ma.png" width="18" height="14" alt="Morocco" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Morocco',d:'13 Jun',time:'6:00 PM ET'},
+  {g:'C',t:'<img src="https://flagcdn.com/20x15/ht.png" width="18" height="14" alt="Haiti" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Haiti vs <img src="https://flagcdn.com/20x15/gb-sct.png" width="18" height="14" alt="Scotland" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Scotland',d:'13 Jun',time:'9:00 PM ET'},
+  {g:'F',t:'<img src="https://flagcdn.com/20x15/nl.png" width="18" height="14" alt="Netherlands" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Netherlands vs <img src="https://flagcdn.com/20x15/jp.png" width="18" height="14" alt="Japan" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Japan',d:'14 Jun',time:'3:00 PM ET'},
+  {g:'H',t:'<img src="https://flagcdn.com/20x15/es.png" width="18" height="14" alt="Spain" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Spain vs <img src="https://flagcdn.com/20x15/cv.png" width="18" height="14" alt="Cape Verde" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Cape Verde',d:'14 Jun',time:'3:00 PM ET'},
+  {g:'G',t:'<img src="https://flagcdn.com/20x15/be.png" width="18" height="14" alt="Belgium" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Belgium vs <img src="https://flagcdn.com/20x15/eg.png" width="18" height="14" alt="Egypt" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Egypt',d:'14 Jun',time:'6:00 PM ET'},
+  {g:'I',t:'<img src="https://flagcdn.com/20x15/fr.png" width="18" height="14" alt="France" style="border-radius:1px;vertical-align:middle;margin-right:3px;">France vs <img src="https://flagcdn.com/20x15/sn.png" width="18" height="14" alt="Senegal" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Senegal',d:'14 Jun',time:'6:00 PM ET'},
+  {g:'L',t:'<img src="https://flagcdn.com/20x15/gb-eng.png" width="18" height="14" alt="England" style="border-radius:1px;vertical-align:middle;margin-right:3px;">England vs <img src="https://flagcdn.com/20x15/gh.png" width="18" height="14" alt="Ghana" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Ghana',d:'15 Jun',time:'3:00 PM ET'},
+  {g:'J',t:'<img src="https://flagcdn.com/20x15/ar.png" width="18" height="14" alt="Argentina" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Argentina vs <img src="https://flagcdn.com/20x15/dz.png" width="18" height="14" alt="Algeria" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Algeria',d:'15 Jun',time:'6:00 PM ET'},
+  {g:'K',t:'<img src="https://flagcdn.com/20x15/pt.png" width="18" height="14" alt="Portugal" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Portugal vs <img src="https://flagcdn.com/20x15/uz.png" width="18" height="14" alt="Uzbekistan" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Uzbekistan',d:'15 Jun',time:'9:00 PM ET'},
+  {g:'D',t:'<img src="https://flagcdn.com/20x15/au.png" width="18" height="14" alt="Australia" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Australia vs <img src="https://flagcdn.com/20x15/tr.png" width="18" height="14" alt="Turkey" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Turkey',d:'15 Jun',time:'9:00 PM ET'},
+  {g:'E',t:'<img src="https://flagcdn.com/20x15/ci.png" width="18" height="14" alt="Ivory Coast" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Ivory Coast vs <img src="https://flagcdn.com/20x15/ec.png" width="18" height="14" alt="Ecuador" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Ecuador',d:'16 Jun',time:'3:00 PM ET'},
+  {g:'F',t:'<img src="https://flagcdn.com/20x15/se.png" width="18" height="14" alt="Sweden" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Sweden vs <img src="https://flagcdn.com/20x15/tn.png" width="18" height="14" alt="Tunisia" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Tunisia',d:'16 Jun',time:'6:00 PM ET'},
+  {g:'G',t:'<img src="https://flagcdn.com/20x15/ir.png" width="18" height="14" alt="Iran" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Iran vs <img src="https://flagcdn.com/20x15/nz.png" width="18" height="14" alt="New Zealand" style="border-radius:1px;vertical-align:middle;margin-right:3px;">New Zealand',d:'16 Jun',time:'9:00 PM ET'},
+  {g:'H',t:'<img src="https://flagcdn.com/20x15/sa.png" width="18" height="14" alt="Saudi Arabia" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Saudi Arabia vs <img src="https://flagcdn.com/20x15/uy.png" width="18" height="14" alt="Uruguay" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Uruguay',d:'16 Jun',time:'9:00 PM ET'},
+  {g:'I',t:'<img src="https://flagcdn.com/20x15/iq.png" width="18" height="14" alt="Iraq" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Iraq vs <img src="https://flagcdn.com/20x15/no.png" width="18" height="14" alt="Norway" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Norway',d:'17 Jun',time:'3:00 PM ET'},
+  {g:'J',t:'<img src="https://flagcdn.com/20x15/at.png" width="18" height="14" alt="Austria" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Austria vs <img src="https://flagcdn.com/20x15/jo.png" width="18" height="14" alt="Jordan" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Jordan',d:'17 Jun',time:'6:00 PM ET'},
+  {g:'K',t:'<img src="https://flagcdn.com/20x15/cd.png" width="18" height="14" alt="DR Congo" style="border-radius:1px;vertical-align:middle;margin-right:3px;">DR Congo vs <img src="https://flagcdn.com/20x15/co.png" width="18" height="14" alt="Colombia" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Colombia',d:'17 Jun',time:'9:00 PM ET'},
+  {g:'L',t:'<img src="https://flagcdn.com/20x15/hr.png" width="18" height="14" alt="Croatia" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Croatia vs <img src="https://flagcdn.com/20x15/pa.png" width="18" height="14" alt="Panama" style="border-radius:1px;vertical-align:middle;margin-right:3px;">Panama',d:'17 Jun',time:'9:00 PM ET'},
+];
+
+let currentGroup = 'ALL';
+
+function filterGroup(grp, btn) {
+  currentGroup = grp;
+  document.querySelectorAll('.grp-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTeamGrid();
+  renderMiniFixtures();
+}
+
+function renderTeamGrid() {
+  const grid = document.getElementById('team-grid');
+  if (!grid) return;
+  grid.querySelectorAll('.team-tile').forEach(tile => {
+    const grp = tile.getAttribute('data-group');
+    tile.style.display = (currentGroup === 'ALL' || grp === currentGroup) ? '' : 'none';
+  });
+}
+
+function renderMiniFixtures() {
+  const el = document.getElementById('mini-fixtures');
+  if (!el) return;
+  const filtered = currentGroup === 'ALL'
+    ? ALL_FIXTURES.slice(0, 10)
+    : ALL_FIXTURES.filter(f => f.g === currentGroup);
+  if (!filtered.length) {
+    el.innerHTML = '<div class="mini-match"><div class="mini-teams" style="color:rgba(255,255,255,0.4);font-size:11px;">No upcoming fixtures for this group</div></div>';
+    return;
+  }
+  el.innerHTML = filtered.map(f => `
+    <div class="mini-match">
+      <div class="mini-grp">${f.g}</div>
+      <div class="mini-teams">${f.t}</div>
+      <div class="mini-time">${f.d}<div class="mini-date">${f.time}</div></div>
+    </div>`).join('');
+}
+
+function initDashboard() {
+  buildGroups();
+  setClaudeLinks();
+  shuffleTrivia();
+  renderTrivia();
+  buildFacts();
+  renderTeamGrid();
+  renderMiniFixtures();
+  buildBriefing();
+  buildScorerPanel();
+}
+
+// Run immediately if DOM is ready, otherwise wait
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDashboard);
+} else {
+  initDashboard();
+}
 </script>
 </body>
 </html>
